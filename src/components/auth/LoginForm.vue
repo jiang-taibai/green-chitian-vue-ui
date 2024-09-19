@@ -3,13 +3,25 @@ import {ref, defineEmits} from 'vue'
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
 
-const authType = ref('sms');
-const account = ref('');
-const sms = ref('');
-const password = ref('');
+const formData = ref({
+  authType: 'sms',
+  account: '',
+  sms: '',
+  password: ''
+})
+
+const sendingState = ref({
+  sent: false,
+  enable: true,
+  count: 0
+})
+
+const sendingConfig = {
+  intervalSeconds: 60,
+}
 
 const onChangeAuthType = () => {
-  authType.value = authType.value === 'sms' ? 'password' : 'sms';
+  formData.value.authType = formData.value.authType === 'sms' ? 'password' : 'sms';
 }
 const onChangeToForget = () => {
   emits('change-to-forget');
@@ -17,9 +29,21 @@ const onChangeToForget = () => {
 const onChangeToRegister = () => {
   emits('change-to-register');
 }
-const login = () => {
+const onLogin = () => {
   // 先简单的触发事件，后续再补充登录逻辑
-  emits('login', {account: account.value, sms: sms.value, password: password.value});
+  emits('login', {...formData.value});
+}
+const onSendSms = () => {
+  sendingState.value.sent = true;
+  sendingState.value.enable = false;
+  sendingState.value.count = sendingConfig.intervalSeconds;
+  const timer = setInterval(() => {
+    sendingState.value.count--;
+    if (sendingState.value.count <= 0) {
+      sendingState.value.enable = true;
+      clearInterval(timer);
+    }
+  }, 1000);
 }
 </script>
 
@@ -31,19 +55,22 @@ const login = () => {
     </div>
     <div class="form">
       <div class="input">
-        <van-field v-model="account" label="手机号" placeholder="请输入手机号"/>
-        <van-field v-show="authType==='sms'" v-model="sms" clearable label="验证码"
+        <van-field v-model="formData.account" label="手机号" placeholder="请输入手机号"/>
+        <van-field v-show="formData.authType==='sms'" v-model="formData.sms" clearable label="验证码"
                    placeholder="请输入短信验证码">
           <template #button>
-            <div>发送验证码</div>
+            <div style="color: #1989fa" v-if="sendingState.enable" @click="onSendSms">
+              <span>{{ sendingState.sent ? '重新发送' : '发送验证码' }}</span>
+            </div>
+            <div v-else>{{ sendingState.count }}s</div>
           </template>
         </van-field>
-        <van-field v-show="authType==='password'" v-model="password"
+        <van-field v-show="formData.authType==='password'" v-model="formData.password"
                    label="密码" placeholder="请输入密码" type="password"/>
         <van-field v-show="false" placeholder="用来生成密码的横线，请勿删除"/>
         <div class="action">
           <div class="left" @click="onChangeAuthType">
-            {{ authType === 'sms' ? '使用密码登录' : '使用短信登录' }}
+            {{ formData.authType === 'sms' ? '使用密码登录' : '使用短信登录' }}
           </div>
           <div class="right" @click="onChangeToForget">
             忘记密码？
@@ -51,14 +78,14 @@ const login = () => {
         </div>
       </div>
       <div class="buttons">
-        <van-button type="primary" round block @click="login">登陆</van-button>
+        <van-button type="primary" round block @click="onLogin">登陆</van-button>
         <van-button type="default" round block @click="onChangeToRegister">前往注册</van-button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .container {
   flex: 1
 }

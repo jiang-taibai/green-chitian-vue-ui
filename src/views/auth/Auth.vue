@@ -1,10 +1,17 @@
 <script setup>
 import {ref} from 'vue'
+import {showSuccessToast} from 'vant';
 import LoginForm from "@/components/auth/LoginForm.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
 import ForgetForm from "@/components/auth/ForgetForm.vue";
+import {useRouter} from 'vue-router';
 
+const router = useRouter();
 const tab = ref('login');
+const onLogin = (data) => {
+  showSuccessToast('登陆成功');
+  router.push('/user/dashboard');
+}
 </script>
 
 <template>
@@ -13,7 +20,8 @@ const tab = ref('login');
       <span>绿色赤田</span>
     </div>
     <div class="main">
-      <login-form v-if="tab==='login'" @change-to-register="tab='register'" @change-to-forget="tab='forget'"/>
+      <login-form v-if="tab==='login'" @change-to-register="tab='register'" @change-to-forget="tab='forget'"
+                  @login="onLogin"/>
       <register-form v-else-if="tab==='register'" @change-to-login="tab='login'"/>
       <forget-form v-else @change-to-login="tab='login'"/>
     </div>

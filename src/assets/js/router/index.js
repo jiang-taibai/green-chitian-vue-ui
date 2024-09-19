@@ -6,7 +6,7 @@ const Auth = () => import('@/views/auth/Auth.vue')
 
 const routes = [{
     path: '/',
-    redirect: '/user/dashboard'
+    redirect: '/auth/auth'
 }, {
     path: '/user/dashboard',
     name: 'Dashboard',
