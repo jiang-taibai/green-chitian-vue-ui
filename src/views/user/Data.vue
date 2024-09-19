@@ -5,8 +5,8 @@ import UserTabBar from "@/components/user/UserTabBar.vue";
 
 <template>
   <div>
-    <h1>Dashboard</h1>
-    <user-tab-bar active="dashboard"/>
+    <h1>Data</h1>
+    <user-tab-bar active="data"/>
   </div>
 </template>
 
