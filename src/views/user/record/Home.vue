@@ -17,11 +17,11 @@ const recordFilterFormActionSheetFormValue = computed(() => {
 </script>
 
 <template>
-  <van-nav-bar title="记录 - 首页"/>
+  <van-nav-bar title="记录 - 首页" fixed placeholder/>
   <div class="container">
     <div class="action">
       <van-field v-model="recordFilterFormActionSheetFormValue" is-link readonly
-                 label="筛选" label-width="3em" placeholder="请选择筛选方式"
+                 label="筛选：" label-width="3em" placeholder="请选择筛选方式"
                  @click="recordFilterFormActionSheetShow=true"/>
       <van-button style="margin-top: 8px"
                   type="primary" block round size="small" to="/user/record/upload">添加记录
@@ -29,8 +29,8 @@ const recordFilterFormActionSheetFormValue = computed(() => {
     </div>
     <record-card-list/>
     <record-filter-form-action-sheet v-model:show="recordFilterFormActionSheetShow"
-                                     v-model:filterData="recordFilterFormActionSheetData"
-    />
+                                     v-model:filterData="recordFilterFormActionSheetData"/>
+    <van-back-top bottom="10vh"/>
   </div>
 </template>
 
