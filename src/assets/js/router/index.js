@@ -7,6 +7,10 @@ const Record = () => import('@/views/user/Record.vue')
 const Data = () => import('@/views/user/Data.vue')
 const Profile = () => import('@/views/user/Profile.vue')
 
+const RecordHome = () => import('@/views/user/record/Home.vue')
+const RecordDetail = () => import('@/views/user/record/Detail.vue')
+const RecordUpload = () => import('@/views/user/record/Upload.vue')
+
 const authRoutes = [{
     path: '/',
     redirect: '/auth/auth'
@@ -18,19 +22,32 @@ const authRoutes = [{
 
 const userRoutes = [{
     path: '/user/dashboard',
-    name: 'Dashboard',
+    name: 'UserDashboard',
     component: Dashboard
 }, {
     path: '/user/record',
-    name: 'Record',
-    component: Record
+    component: Record,
+    redirect: '/user/record/home',
+    children: [{
+        path: 'home',
+        name: 'RecordHome',
+        component: RecordHome
+    }, {
+        path: 'detail/:id',
+        name: 'RecordDetail',
+        component: RecordDetail
+    }, {
+        path: 'upload',
+        name: 'RecordUpload',
+        component: RecordUpload
+    }]
 }, {
     path: '/user/data',
-    name: 'Data',
+    name: 'UserData',
     component: Data
 }, {
     path: '/user/profile',
-    name: 'Profile',
+    name: 'UserProfile',
     component: Profile
 }]
 
