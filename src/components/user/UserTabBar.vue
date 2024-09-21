@@ -8,7 +8,7 @@ const localActive = ref(props.active);
 </script>
 
 <template>
-  <van-tabbar v-model="localActive">
+  <van-tabbar v-model="localActive" placeholder>
     <van-tabbar-item icon="home" icon-prefix="iconfont" name="dashboard"
                      replace to="/user/dashboard">主页
     </van-tabbar-item>
