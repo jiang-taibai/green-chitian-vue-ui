@@ -1,0 +1,1 @@
+export const tencentMapDeveloperKey = "KP6BZ-WOB3I-5K2GM-UPTW2-4MXIQ-B3BAN"
