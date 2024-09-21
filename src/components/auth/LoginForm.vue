@@ -78,7 +78,7 @@ const onSendSms = () => {
         </div>
       </div>
       <div class="buttons">
-        <van-button type="primary" round block @click="onLogin">登陆</van-button>
+        <van-button type="primary" round block @click="onLogin">登陆（测试跳过）</van-button>
         <van-button type="default" round block @click="onChangeToRegister">前往注册</van-button>
       </div>
     </div>
