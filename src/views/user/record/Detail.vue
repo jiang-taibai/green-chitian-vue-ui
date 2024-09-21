@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 
 import recordImageDemo01 from "@/assets/img/record/demo-01.jpg";

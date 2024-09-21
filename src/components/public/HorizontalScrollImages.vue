@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted, watch, defineProps} from 'vue';
+import {ref, onMounted, defineProps} from 'vue';
 import {showImagePreview} from 'vant';
 
 const props = defineProps({
@@ -122,14 +122,6 @@ function previewImage(index) {
 
 .no-images p {
   margin-top: 10px;
-}
-
-/* 加载状态样式 */
-.scroll-container > .van-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30vw;
 }
 
 /* 阴影样式 */

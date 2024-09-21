@@ -1,5 +1,5 @@
 <script setup>
-import {ref, defineProps, computed} from "vue";
+import {defineProps, computed} from "vue";
 import {useRouter} from "vue-router";
 import {v4 as uuid} from 'uuid';
 
