@@ -10,7 +10,7 @@ const props = defineProps({
     default: () => {
       return {
         text: "未知位置",
-        latitude: 18.352992,
+        latitude: 19.352992,
         longitude: 109.155312,
       }
     }
@@ -30,21 +30,27 @@ const getLocation = () => {
   geoLocationGetter.value.requestGeolocation();
 }
 const onLocationFound = (data) => {
-  console.log(data);
-  getLocationText(localLocation.value.latitude, localLocation.value.longitude).then((res) => {
-    console.log(res);
-    if (res.status !== "0") {
-      localLocation.value.text = "获取位置信息失败";
-      return;
-    }
-    localLocation.value.text = res.result.formatted_address;
-  }).catch((err) => {
-    localLocation.value.text = "获取位置信息失败";
-  });
+  localLocation.value = {
+    text: data.address,
+    latitude: data.lat,
+    longitude: data.lon,
+  }
+  // getLocationText(localLocation.value.latitude, localLocation.value.longitude).then((res) => {
+  //   if (res.status !== "0") {
+  //     localLocation.value.text = "获取位置信息失败";
+  //     return;
+  //   }
+  //   localLocation.value.text = res.result.formatted_address;
+  // }).catch((err) => {
+  //   localLocation.value.text = "获取位置信息失败";
+  // });
 }
 const onLocationFailed = (data) => {
-  console.log(data);
-  localLocation.value.text = "获取位置信息失败";
+  localLocation.value = {
+    text: "获取位置信息失败",
+    latitude: 0,
+    longitude: 0,
+  };
 }
 </script>
 
