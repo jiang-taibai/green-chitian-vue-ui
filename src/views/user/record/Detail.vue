@@ -43,7 +43,7 @@ const back = () => history.back();
   <div class="container">
     <div class="group">
       <div class="group-title">图片</div>
-      <div class="group-content">
+      <div class="group-content pd-0-20">
         <div class="img-group">
           <horizontal-scroll-images :images="detailInfo.images"/>
         </div>
@@ -51,7 +51,7 @@ const back = () => history.back();
     </div>
     <div class="group">
       <div class="group-title">记录位置</div>
-      <div class="group-content">
+      <div class="group-content pd-0-20">
         <record-t-map :coordinate="coordinateTMapObject"/>
       </div>
     </div>
@@ -89,5 +89,9 @@ const back = () => history.back();
     padding: 10px;
     background-color: #fff;
   }
+}
+
+.pd-0-20 {
+  padding: 0 20px;
 }
 </style>
