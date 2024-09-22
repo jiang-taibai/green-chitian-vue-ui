@@ -14,7 +14,7 @@ const props = defineProps({
     required: true,
     validator: (value) => {
       return ['dashboard', 'record', 'farmland-data', 'profile'].includes(value);
-    }
+    },
   }
 });
 const localActive = ref(props.active);
@@ -29,7 +29,7 @@ const localActive = ref(props.active);
                      replace :to="tabName2Route['record']">记录
     </van-tabbar-item>
     <van-tabbar-item icon="data" icon-prefix="iconfont" name="farmland-data"
-                     replace :to="tabName2Route['farmland-data']">数据
+                     replace :to="tabName2Route['farmland-data']">土壤养分
     </van-tabbar-item>
     <van-tabbar-item icon="profile" icon-prefix="iconfont" name="profile"
                      replace :to="tabName2Route['profile']">我的
