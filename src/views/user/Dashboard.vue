@@ -1,7 +1,9 @@
 <script setup>
 
 import UserTabBar from "@/components/user/UserTabBar.vue";
-import DashboardStatistics from "@/components/user/dashboard/DashboardTotalAgrochemicalStatistics.vue";
+import DashboardTotalAgrochemicalStatistics from "@/components/user/dashboard/DashboardTotalAgrochemicalStatistics.vue";
+import DashboardVariousAgrochemicalStatistics
+  from "@/components/user/dashboard/DashboardVariousAgrochemicalStatistics.vue";
 </script>
 
 <template>
@@ -13,7 +15,7 @@ import DashboardStatistics from "@/components/user/dashboard/DashboardTotalAgroc
           <span class="title-text">总化肥农药统计</span>
         </div>
         <div class="content">
-          <dashboard-statistics/>
+          <dashboard-total-agrochemical-statistics/>
         </div>
       </div>
       <div class="chart-item">
@@ -21,14 +23,16 @@ import DashboardStatistics from "@/components/user/dashboard/DashboardTotalAgroc
           <van-icon class="title-icon" name="chart" class-prefix="iconfont" size="18"/>
           <span class="title-text">各化肥农药统计</span>
         </div>
-        <div class="content"></div>
+        <div class="content">
+          <dashboard-various-agrochemical-statistics/>
+        </div>
       </div>
     </div>
     <user-tab-bar active="dashboard"/>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .container {
   min-height: 100vh;
   padding: 16px;

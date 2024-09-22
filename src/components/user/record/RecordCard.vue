@@ -50,15 +50,17 @@ const openDetail = () => {
 </script>
 
 <template>
-  <div class="container card" @click="openDetail">
-    <div class="img">
-      <van-image width="30vw" height="30vw" fit="cover" :src="cover" error-icon="image-error" icon-prefix="iconfont"/>
-    </div>
-    <div class="info">
-      <van-text-ellipsis class="farmland" :content="farmland"/>
-      <div class="date">{{ date }}</div>
-      <van-text-ellipsis class="agro" :content="agroChemicalsDosage"/>
-      <van-text-ellipsis class="note" :content="note"/>
+  <div>
+    <div class="container card" @click="openDetail">
+      <div class="img">
+        <van-image width="30vw" height="30vw" fit="cover" :src="cover" error-icon="image-error" icon-prefix="iconfont"/>
+      </div>
+      <div class="info">
+        <van-text-ellipsis class="farmland" :content="farmland"/>
+        <div class="date">{{ date }}</div>
+        <van-text-ellipsis class="agro" :content="agroChemicalsDosage"/>
+        <van-text-ellipsis class="note" :content="note"/>
+      </div>
     </div>
   </div>
 </template>

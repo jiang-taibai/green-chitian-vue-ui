@@ -200,24 +200,26 @@ const handleTabChange = (name) => {
 </script>
 
 <template>
-  <div class="tab-container">
-    <van-tabs v-model:active="activatedTab" @change="handleTabChange">
-      <van-tab title="月度" name="monthly">
-        <div class="chart-container">
-          <div ref="monthlyChart" class="chart"></div>
-        </div>
-      </van-tab>
-      <van-tab title="季度" name="quarterly">
-        <div class="chart-container">
-          <div ref="quarterlyChart" class="chart"></div>
-        </div>
-      </van-tab>
-      <van-tab title="年度" name="annual">
-        <div class="chart-container">
-          <div ref="annualChart" class="chart"></div>
-        </div>
-      </van-tab>
-    </van-tabs>
+  <div>
+    <div class="tab-container">
+      <van-tabs v-model:active="activatedTab" @change="handleTabChange">
+        <van-tab title="月度" name="monthly">
+          <div class="chart-container">
+            <div ref="monthlyChart" class="chart"></div>
+          </div>
+        </van-tab>
+        <van-tab title="季度" name="quarterly">
+          <div class="chart-container">
+            <div ref="quarterlyChart" class="chart"></div>
+          </div>
+        </van-tab>
+        <van-tab title="年度" name="annual">
+          <div class="chart-container">
+            <div ref="annualChart" class="chart"></div>
+          </div>
+        </van-tab>
+      </van-tabs>
+    </div>
   </div>
 </template>
 
