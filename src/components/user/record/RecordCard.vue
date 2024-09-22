@@ -50,7 +50,7 @@ const openDetail = () => {
 </script>
 
 <template>
-  <div class="container" @click="openDetail">
+  <div class="container card" @click="openDetail">
     <div class="img">
       <van-image width="30vw" height="30vw" fit="cover" :src="cover" error-icon="image-error" icon-prefix="iconfont"/>
     </div>
@@ -69,7 +69,12 @@ const openDetail = () => {
   flex-direction: row;
   border-radius: 8px;
   overflow: hidden;
-  background: #F1F3F4;
+
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
 }
 
 .img {
