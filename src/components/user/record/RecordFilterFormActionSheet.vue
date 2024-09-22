@@ -90,6 +90,7 @@ const onConfirmActionSheet = () => {
     }
   }
   emit('update:filterData', {...localFilterData.value});
+  showFilterActionSheet.value = false;
 };
 </script>
 
