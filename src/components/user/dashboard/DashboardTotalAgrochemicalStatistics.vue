@@ -147,8 +147,8 @@ const initChart = (chartDom, xAxisData, frequencySeriesData, dosageSeriesData) =
       left: 'left',
     },
     grid: [{
-      top: 30,
-      bottom: 30,
+      top: '10%',
+      bottom: '8%',
     }],
     toolbox: {
       show: true,

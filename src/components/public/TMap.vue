@@ -1,7 +1,7 @@
 <script setup>
 import {ref, defineProps} from "vue";
 import pointImage from "@/assets/img/icon/point.png";
-import {tencentMapDeveloperKey} from "@/assets/js/public/tmap.js";
+import {tencentMapDeveloperKey} from "@/assets/js/secret";
 
 const props = defineProps({
   coordinate: {

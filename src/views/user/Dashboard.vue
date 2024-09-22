@@ -7,6 +7,7 @@ import DashboardVariousAgrochemicalStatistics
 </script>
 
 <template>
+  <van-nav-bar title="绿色赤田" fixed placeholder/>
   <div class="container">
     <div class="chart-container">
       <div class="chart-item">

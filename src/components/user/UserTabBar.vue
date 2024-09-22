@@ -28,7 +28,7 @@ const localActive = ref(props.active);
     <van-tabbar-item icon="record" icon-prefix="iconfont" name="record"
                      replace :to="tabName2Route['record']">记录
     </van-tabbar-item>
-    <van-tabbar-item icon="data" icon-prefix="iconfont" name="farmland-data"
+    <van-tabbar-item icon="location" icon-prefix="iconfont" name="farmland-data"
                      replace :to="tabName2Route['farmland-data']">土壤养分
     </van-tabbar-item>
     <van-tabbar-item icon="profile" icon-prefix="iconfont" name="profile"

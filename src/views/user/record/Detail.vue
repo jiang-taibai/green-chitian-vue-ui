@@ -9,7 +9,7 @@ import recordImageDemo04 from "@/assets/img/record/demo-04.jpg";
 import recordImageDemo05 from "@/assets/img/record/demo-05.jpg";
 import HorizontalScrollImages from "@/components/public/HorizontalScrollImages.vue";
 
-import RecordTMap from "@/components/user/record/RecordTMap.vue";
+import TMap from "@/components/public/TMap.vue";
 
 const route = useRoute();
 
@@ -52,7 +52,7 @@ const back = () => history.back();
     <div class="group">
       <div class="group-title">记录位置</div>
       <div class="group-content pd-0-20">
-        <record-t-map :coordinate="coordinateTMapObject"/>
+        <t-map :coordinate="coordinateTMapObject"/>
       </div>
     </div>
     <div class="group">
