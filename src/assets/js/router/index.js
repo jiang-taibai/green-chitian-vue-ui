@@ -4,7 +4,7 @@ import {createRouter, createWebHashHistory} from 'vue-router'
 const Auth = () => import('@/views/auth/Auth.vue')
 const Dashboard = () => import('@/views/user/Dashboard.vue')
 const Record = () => import('@/views/user/Record.vue')
-const Data = () => import('@/views/user/Data.vue')
+const Data = () => import('@/views/user/FarmlandData.vue')
 const Profile = () => import('@/views/user/Profile.vue')
 
 const RecordHome = () => import('@/views/user/record/Home.vue')
@@ -26,6 +26,7 @@ const userRoutes = [{
     component: Dashboard
 }, {
     path: '/user/record',
+    name: 'UserRecord',
     component: Record,
     redirect: '/user/record/home',
     children: [{
@@ -42,8 +43,8 @@ const userRoutes = [{
         component: RecordUpload
     }]
 }, {
-    path: '/user/data',
-    name: 'UserData',
+    path: '/user/farmland-data',
+    name: 'UserFarmlandData',
     component: Data
 }, {
     path: '/user/profile',

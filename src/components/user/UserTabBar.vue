@@ -1,8 +1,21 @@
 <script setup>
 import {ref, defineProps} from 'vue';
 
+const tabName2Route = {
+  'dashboard': {name: 'UserDashboard'},
+  'record': {name: 'UserRecord'},
+  'farmland-data': {name: 'UserFarmlandData'},
+  'profile': {name: 'UserProfile'},
+};
+
 const props = defineProps({
-  active: String
+  active: {
+    type: String,
+    required: true,
+    validator: (value) => {
+      return ['dashboard', 'record', 'farmland-data', 'profile'].includes(value);
+    }
+  }
 });
 const localActive = ref(props.active);
 </script>
@@ -10,16 +23,16 @@ const localActive = ref(props.active);
 <template>
   <van-tabbar v-model="localActive" placeholder>
     <van-tabbar-item icon="home" icon-prefix="iconfont" name="dashboard"
-                     replace to="/user/dashboard">主页
+                     replace :to="tabName2Route['dashboard']">主页
     </van-tabbar-item>
     <van-tabbar-item icon="record" icon-prefix="iconfont" name="record"
-                     replace to="/user/record">记录
+                     replace :to="tabName2Route['record']">记录
     </van-tabbar-item>
-    <van-tabbar-item icon="data" icon-prefix="iconfont" name="data"
-                     replace to="/user/data">数据
+    <van-tabbar-item icon="data" icon-prefix="iconfont" name="farmland-data"
+                     replace :to="tabName2Route['farmland-data']">数据
     </van-tabbar-item>
     <van-tabbar-item icon="profile" icon-prefix="iconfont" name="profile"
-                     replace to="/user/profile">我的
+                     replace :to="tabName2Route['profile']">我的
     </van-tabbar-item>
   </van-tabbar>
 </template>

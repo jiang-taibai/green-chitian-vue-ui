@@ -6,7 +6,7 @@ import UserTabBar from "@/components/user/UserTabBar.vue";
 <template>
   <div>
     <h1>Data</h1>
-    <user-tab-bar active="data"/>
+    <user-tab-bar active="farmland-data"/>
   </div>
 </template>
 
