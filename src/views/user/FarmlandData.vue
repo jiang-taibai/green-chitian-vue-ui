@@ -16,6 +16,20 @@ const coordinate = computed(() => {
     longitude: location.value.longitude,
   }
 })
+
+const coordinateText = computed(() => {
+  return `(${location.value.latitude}, ${location.value.longitude})`
+})
+const soilNutrients = ref([
+  {name: "坐标", value: coordinateText},
+  {name: "氮", value: "0.1g/kg"},
+  {name: "磷", value: "0.2g/kg"},
+  {name: "钾", value: "0.3g/kg"},
+  {name: "有机质", value: "0.4g/kg"},
+  {name: "PH", value: "5.6"},
+  {name: "水分", value: "20%"},
+  {name: "温度", value: "20℃"},
+])
 </script>
 
 <template>
@@ -23,15 +37,18 @@ const coordinate = computed(() => {
     <van-nav-bar title="土壤养分" fixed placeholder/>
     <div class="container">
       <div class="location">
-        <geo-location-filed v-model:location="location"/>
+        <geo-location-filed class="location-filed" v-model:location="location"/>
         <t-map :coordinate="coordinate"/>
       </div>
+      <van-cell-group style="margin: 0" title="当前位置土壤养分" inset>
+        <van-cell v-for="item in soilNutrients" :key="item.name" :title="item.name" :value="item.value"/>
+      </van-cell-group>
     </div>
     <user-tab-bar active="farmland-data"/>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .container {
   padding: 16px;
 }
@@ -40,5 +57,10 @@ const coordinate = computed(() => {
   padding: 16px;
   border-radius: 8px;
   background-color: #fff;
+
+  .location-filed {
+    font-size: var(--van-cell-font-size);
+    padding: 0 10px 10px;
+  }
 }
 </style>
