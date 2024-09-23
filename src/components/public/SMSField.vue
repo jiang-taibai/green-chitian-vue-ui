@@ -45,8 +45,8 @@ const onSendSms = () => {
   }, 1000);
 }
 
-const onUpdateModelValue = (event) => {
-  emit('update:modelValue', event.target.value)
+const onUpdateModelValue = (value) => {
+  emit('update:modelValue', value)
 }
 </script>
 
