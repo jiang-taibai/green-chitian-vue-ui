@@ -1,7 +1,6 @@
 <script setup>
 import {ref, defineProps, defineEmits, watch} from "vue";
-import {getLocationText} from "@/assets/js/api/tianditu-api.js";
-import GeoLocationGetter from "@/components/public/GeoLocationGetterApi.vue";
+import GeoLocationGetterApi from "@/components/public/GeoLocationGetterApi.vue";
 import {tencentMapDeveloperKey} from "@/assets/js/secret/index.js";
 
 const props = defineProps({
@@ -10,13 +9,12 @@ const props = defineProps({
     default: () => {
       return {
         text: "未知位置",
-        latitude: 19.352992,
-        longitude: 109.155312,
+        latitude: 0,
+        longitude: 0,
       }
     }
   }
 })
-
 
 const emits = defineEmits(["update:location"]);
 const localLocation = ref(props.location);
@@ -33,24 +31,10 @@ const onLocationFound = (data) => {
   localLocation.value = {
     text: data.address,
     latitude: data.lat,
-    longitude: data.lon,
+    longitude: data.lng,
   }
-  // getLocationText(localLocation.value.latitude, localLocation.value.longitude).then((res) => {
-  //   if (res.status !== "0") {
-  //     localLocation.value.text = "获取位置信息失败";
-  //     return;
-  //   }
-  //   localLocation.value.text = res.result.formatted_address;
-  // }).catch((err) => {
-  //   localLocation.value.text = "获取位置信息失败";
-  // });
 }
 const onLocationFailed = (data) => {
-  localLocation.value = {
-    text: "获取位置信息失败",
-    latitude: 0,
-    longitude: 0,
-  };
 }
 </script>
 
@@ -61,14 +45,14 @@ const onLocationFailed = (data) => {
       <van-text-ellipsis rows="1" class="location-text" :content="localLocation.text" position="start"/>
       <van-button type="primary" size="small" icon="location" @click="getLocation">定位</van-button>
     </div>
-    <geo-location-getter ref="geoLocationGetter" referer="绿色赤田" :api-key="tencentMapDeveloperKey"
-                         @location-found="onLocationFound" @location-failed="onLocationFailed"/>
+    <geo-location-getter-api ref="geoLocationGetter" referer="绿色赤田" :api-key="tencentMapDeveloperKey"
+                             @location-found="onLocationFound" @location-failed="onLocationFailed"/>
   </div>
 </template>
 
 <style scoped lang="less">
 .location {
-  padding: 16px;
+  padding: 10px;
   background-color: #fff;
   display: flex;
   flex-direction: row;

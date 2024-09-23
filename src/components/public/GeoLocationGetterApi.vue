@@ -2,7 +2,8 @@
 <template>
   <div class="geolocation-container">
     <!-- 地理定位组件 iframe -->
-    <iframe ref="geoPage" v-show="false" width="100%" height="100%" frameborder="0" scrolling="no" allow="geolocation" :src="geoPageSrc">
+    <iframe ref="geoPage" v-show="false" width="100%" height="100%" frameborder="0" scrolling="no" allow="geolocation"
+            :src="geoPageSrc">
     </iframe>
   </div>
 </template>
@@ -51,22 +52,14 @@ const handleMessage = (event) => {
   // 安全性考虑：验证消息来源
   // 示例中未验证来源，请根据实际情况添加
   // if (event.origin !== 'https://apis.map.qq.com') return;
-
   const data = event.data;
-
   if (data && data.module === 'geolocation') {
     loc.value = data;
-
     const {lat, lng, addr, city} = data;
-
     const address = addr || city || '未知地址';
-
-    // 触发位置找到事件
     emit('location-found', {lat, lng, address});
   } else {
-    // 定位失败或接收到无效数据
     emit('location-failed', data);
-    console.warn('定位失败或接收到无效数据');
   }
 };
 
