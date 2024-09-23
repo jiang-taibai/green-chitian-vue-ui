@@ -3,6 +3,7 @@ import {ref, defineProps} from 'vue';
 
 const tabName2Route = {
   'dashboard': {name: 'UserDashboard'},
+  'encyclopedia': {name: 'UserEncyclopedia'},
   'record': {name: 'UserRecord'},
   'farmland-data': {name: 'UserFarmlandData'},
   'profile': {name: 'UserProfile'},
@@ -13,7 +14,7 @@ const props = defineProps({
     type: String,
     required: true,
     validator: (value) => {
-      return ['dashboard', 'record', 'farmland-data', 'profile'].includes(value);
+      return ['dashboard', 'encyclopedia', 'record', 'farmland-data', 'profile'].includes(value);
     },
   }
 });
@@ -24,6 +25,9 @@ const localActive = ref(props.active);
   <van-tabbar v-model="localActive" placeholder>
     <van-tabbar-item icon="home" icon-prefix="iconfont" name="dashboard"
                      replace :to="tabName2Route['dashboard']">主页
+    </van-tabbar-item>
+    <van-tabbar-item icon="encyclopedia" icon-prefix="iconfont" name="encyclopedia"
+                     replace :to="tabName2Route['encyclopedia']">百科
     </van-tabbar-item>
     <van-tabbar-item icon="record" icon-prefix="iconfont" name="record"
                      replace :to="tabName2Route['record']">记录

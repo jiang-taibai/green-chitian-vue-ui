@@ -1,8 +1,8 @@
 @font-face {
     font-family: "iconfont"; /* Project id 4689131 */
-    src: url('//at.alicdn.com/t/c/font_4689131_f95el82slmm.woff2?t=1727014250846') format('woff2'),
-    url('//at.alicdn.com/t/c/font_4689131_f95el82slmm.woff?t=1727014250846') format('woff'),
-    url('//at.alicdn.com/t/c/font_4689131_f95el82slmm.ttf?t=1727014250846') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_4689131_eoj2nseah0t.woff2?t=1727079240770') format('woff2'),
+    url('//at.alicdn.com/t/c/font_4689131_eoj2nseah0t.woff?t=1727079240770') format('woff'),
+    url('//at.alicdn.com/t/c/font_4689131_eoj2nseah0t.ttf?t=1727079240770') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,18 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.iconfont-home:before {
+    content: "\e65c";
+}
+
+.iconfont-encyclopedia:before {
+    content: "\e61b";
+}
+
+.iconfont-shortcut:before {
+    content: "\e755";
 }
 
 .iconfont-location:before {
@@ -31,9 +43,5 @@
 
 .iconfont-record:before {
     content: "\e67d";
-}
-
-.iconfont-home:before {
-    content: "\e858";
 }
 

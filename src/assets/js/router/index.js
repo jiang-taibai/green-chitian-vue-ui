@@ -3,6 +3,7 @@ import {createRouter, createWebHashHistory} from 'vue-router'
 
 const Auth = () => import('@/views/auth/Auth.vue')
 const Dashboard = () => import('@/views/user/Dashboard.vue')
+const Encyclopedia = () => import('@/views/user/Encyclopedia.vue')
 const Record = () => import('@/views/user/Record.vue')
 const Data = () => import('@/views/user/FarmlandData.vue')
 const Profile = () => import('@/views/user/Profile.vue')
@@ -25,6 +26,10 @@ const userRoutes = [{
     name: 'UserDashboard',
     component: Dashboard
 }, {
+    path: '/user/encyclopedia',
+    name: 'UserEncyclopedia',
+    component: Encyclopedia
+},{
     path: '/user/record',
     name: 'UserRecord',
     component: Record,
