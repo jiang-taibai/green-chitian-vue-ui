@@ -89,14 +89,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <tmap-map v-show="isValidCoordinate" :mapKey="tencentMapDeveloperKey" :baseMap="baseMap"
-            :center="center" :zoom="zoom" :doubleClickZoom="doubleClickZoom" :control="control">
-    <tmap-multi-marker :styles="markerStyles" :geometries="markerGeometries"/>
-  </tmap-map>
-  <canvas v-show="!isValidCoordinate" ref="coordinateErrorCanvas"
-          style="width: 100%; height: 100%; z-index: 2;" width="750" height="376"></canvas>
+  <div>
+    <div class="container">
+      <tmap-map v-show="isValidCoordinate" class="t-map"
+                :mapKey="tencentMapDeveloperKey" :baseMap="baseMap"
+                :center="center" :zoom="zoom" :doubleClickZoom="doubleClickZoom" :control="control">
+        <tmap-multi-marker :styles="markerStyles" :geometries="markerGeometries"/>
+      </tmap-map>
+      <canvas v-show="!isValidCoordinate" ref="coordinateErrorCanvas"
+              style="width: 100%; height: 100%; z-index: 2;" width="750" height="376"></canvas>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.container {
+  border-radius: 8px;
+  overflow: hidden;
+}
 
+.t-map {
+  background: rgba(43, 43, 43, 0.8);
+}
 </style>
