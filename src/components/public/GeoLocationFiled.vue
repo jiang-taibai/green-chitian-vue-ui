@@ -52,7 +52,6 @@ const onLocationFailed = (data) => {
 
 <style scoped lang="less">
 .location {
-  padding: 10px;
   background-color: #fff;
   display: flex;
   flex-direction: row;
