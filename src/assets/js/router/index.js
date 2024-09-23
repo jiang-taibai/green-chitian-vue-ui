@@ -8,9 +8,15 @@ const Record = () => import('@/views/user/Record.vue')
 const Data = () => import('@/views/user/FarmlandData.vue')
 const Profile = () => import('@/views/user/Profile.vue')
 
-const RecordHome = () => import('@/views/user/record/Home.vue')
+const EncyclopediaIndex = () => import('@/views/user/encyclopedia/Index.vue')
+
+const RecordIndex = () => import('@/views/user/record/Index.vue')
 const RecordDetail = () => import('@/views/user/record/Detail.vue')
 const RecordUpload = () => import('@/views/user/record/Upload.vue')
+
+const ProfileIndex = () => import('@/views/user/profile/Index.vue')
+const ProfileModifyPassword = () => import('@/views/user/profile/ModifyPassword.vue')
+const ProfileModifyPhone = () => import('@/views/user/profile/ModifyPhone.vue')
 
 const authRoutes = [{
     path: '/',
@@ -28,16 +34,22 @@ const userRoutes = [{
 }, {
     path: '/user/encyclopedia',
     name: 'UserEncyclopedia',
-    component: Encyclopedia
-},{
+    component: Encyclopedia,
+    redirect: '/user/encyclopedia/index',
+    children: [{
+        path: 'index',
+        name: 'EncyclopediaIndex',
+        component: EncyclopediaIndex
+    }]
+}, {
     path: '/user/record',
     name: 'UserRecord',
     component: Record,
-    redirect: '/user/record/home',
+    redirect: '/user/record/index',
     children: [{
-        path: 'home',
-        name: 'RecordHome',
-        component: RecordHome
+        path: 'index',
+        name: 'RecordIndex',
+        component: RecordIndex
     }, {
         path: 'detail/:id',
         name: 'RecordDetail',
@@ -54,7 +66,20 @@ const userRoutes = [{
 }, {
     path: '/user/profile',
     name: 'UserProfile',
-    component: Profile
+    component: Profile,
+    children: [{
+        path: 'index',
+        name: 'ProfileIndex',
+        component: ProfileIndex
+    }, {
+        path: 'modify-phone',
+        name: 'ProfileModifyPhone',
+        component: ProfileModifyPhone
+    }, {
+        path: 'modify-password',
+        name: 'ProfileModifyPassword',
+        component: ProfileModifyPassword
+    }]
 }]
 
 const routes = [

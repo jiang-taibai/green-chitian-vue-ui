@@ -5,8 +5,7 @@ import UserTabBar from "@/components/user/UserTabBar.vue";
 
 <template>
   <div>
-    <van-nav-bar title="百科指南" fixed placeholder/>
-
+    <router-view/>
     <user-tab-bar active="encyclopedia"/>
   </div>
 </template>
