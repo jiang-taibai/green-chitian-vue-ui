@@ -76,7 +76,7 @@ const commit = (value) => {
           <van-field v-model="detailInfo.agroChemicals" label="农药/化肥" required placeholder="请输入农药/化肥"/>
           <van-field v-model="detailInfo.dosageUnit" type="digit" label="用量" required
                      placeholder="请输入用量，单位：千克"/>
-          <van-field v-model="detailInfo.note" label="备注" placeholder="请输入备注" autosize type="textarea"/>
+          <van-field v-model="detailInfo.note" label="备注" placeholder="请输入备注" rows="1" autosize type="textarea"/>
         </van-cell-group>
       </div>
       <div class="position">
@@ -124,5 +124,9 @@ const commit = (value) => {
   border-radius: 8px;
   background-color: #FFFFFF;
   overflow: hidden;
+}
+
+.position {
+  padding: 10px 16px;
 }
 </style>
