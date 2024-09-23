@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <router-view style="min-height: 100vh; background: #F2F2F2;"/>
+  <router-view style="height: 100%; background: #F2F2F2;"/>
 </template>
 
 <style scoped>
