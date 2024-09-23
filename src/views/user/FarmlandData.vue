@@ -3,6 +3,7 @@ import {computed, ref} from "vue";
 import UserTabBar from "@/components/user/UserTabBar.vue";
 import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import TMap from "@/components/public/TMap.vue";
+import NavBar from "@/components/public/NavBar.vue";
 
 const location = ref({
   text: "未知位置",
@@ -34,7 +35,7 @@ const soilNutrients = ref([
 
 <template>
   <div>
-    <van-nav-bar title="土壤养分" fixed placeholder/>
+    <nav-bar title="土壤养分"/>
     <div class="container">
       <div class="location">
         <geo-location-filed class="location-filed" v-model:location="location"/>

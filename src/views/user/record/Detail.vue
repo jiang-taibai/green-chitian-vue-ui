@@ -10,6 +10,7 @@ import recordImageDemo05 from "@/assets/img/record/demo-05.jpg";
 import HorizontalScrollImages from "@/components/public/HorizontalScrollImages.vue";
 
 import TMap from "@/components/public/TMap.vue";
+import NavBar from "@/components/public/NavBar.vue";
 
 const route = useRoute();
 
@@ -34,13 +35,11 @@ const coordinateTMapObject = computed(() => {
     longitude: detailInfo.longitude,
   };
 });
-
-const back = () => history.back();
 </script>
 
 <template>
   <div>
-    <van-nav-bar title="记录 - 详情" left-text="返回" left-arrow @click-left="back" fixed placeholder/>
+    <nav-bar title="记录 - 详情" back/>
     <div class="container">
       <div class="group">
         <div class="group-title">图片</div>

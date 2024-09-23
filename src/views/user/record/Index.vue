@@ -2,6 +2,7 @@
 import {ref, computed} from 'vue';
 import RecordFilterFormActionSheet from "@/components/user/record/RecordFilterFormActionSheet.vue";
 import RecordCardList from "@/components/user/record/RecordCardList.vue";
+import NavBar from "@/components/public/NavBar.vue";
 
 const recordFilterFormActionSheetShow = ref(false);
 const recordFilterFormActionSheetData = ref({
@@ -17,7 +18,7 @@ const recordFilterFormActionSheetFormValue = computed(() => {
 </script>
 
 <template>
-  <van-nav-bar title="记录 - 首页" fixed placeholder/>
+  <nav-bar title="记录 - 首页"/>
   <div class="container">
     <div class="action">
       <van-field v-model="recordFilterFormActionSheetFormValue" is-link readonly

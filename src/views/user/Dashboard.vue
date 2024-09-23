@@ -5,10 +5,11 @@ import DashboardTotalAgrochemicalStatistics from "@/components/user/dashboard/Da
 import DashboardVariousAgrochemicalStatistics
   from "@/components/user/dashboard/DashboardVariousAgrochemicalStatistics.vue";
 import QuickBox from "@/components/user/dashboard/QuickBox.vue";
+import NavBar from "@/components/public/NavBar.vue";
 </script>
 
 <template>
-  <van-nav-bar title="绿色赤田" fixed placeholder/>
+  <nav-bar title="绿色赤田"/>
   <div class="container">
     <div class="toolbox-container">
       <div class="cart-item">

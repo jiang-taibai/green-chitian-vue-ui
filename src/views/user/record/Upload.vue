@@ -1,6 +1,8 @@
 <script setup>
 import {defineEmits, ref} from 'vue';
 import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
+import NavBar from "@/components/public/NavBar.vue";
+
 const emits = defineEmits(['commit']);
 
 const afterRead = (file) => {
@@ -16,23 +18,23 @@ const detailInfo = ref({
   dosageNumber: 0.00,
   dosageUnit: "g",
   note: "",
-  location:{
+  location: {
     latitude: 0.00,
     longitude: 0.00,
   }
 });
-const back = () => history.back();
-const commit=(value)=>{
-  emits('commit',...value)
+const commit = (value) => {
+  emits('commit', ...value)
 }
 </script>
 
 <template>
-  <van-nav-bar title="记录 - 上传" left-text="返回" left-arrow @click-left="back" fixed placeholder/>
+  <nav-bar title="记录 - 上传" back/>
   <div class="container">
     <div class="detail">
       <van-cell-group inset style="margin: 0">
-        <van-field v-model="detailInfo.farmland" label="农田" required  placeholder="请输入农田" input-class="custom-input"/>
+        <van-field v-model="detailInfo.farmland" label="农田" required placeholder="请输入农田"
+                   input-class="custom-input"/>
         <van-field v-model="detailInfo.agroChemicals" label="农药/化肥" required placeholder="请输入农药/化肥"/>
         <van-field v-model="detailInfo.dosageUnit" type="digit" label="用量" required placeholder="请输入用量"/>
         <van-field v-model="detailInfo.note" label="备注" placeholder="请输入备注"/>
@@ -53,16 +55,18 @@ const commit=(value)=>{
 </template>
 
 <style scoped lang="less">
-.uploadImage{
+.uploadImage {
   margin: 16px;
   display: flex;
   justify-content: left;
   align-items: center;
-  .span{
+
+  .span {
     margin-right: 20px;
   }
 }
-.button{
+
+.button {
   margin: 16px;
 }
 </style>
