@@ -8,3 +8,17 @@
 4. 查询功能，能够查询推荐施肥量、病虫害绿色防控技术模式等。
 5. 后台管理员能够更新推荐施肥量、病虫害绿色防控技术模式这些信息
 6. 上述统计信息能够连接上传到县里面的赤田水库管理云平台，供展示。
+
+# 技术选型
+
+- 前端
+    - 运行环境：[Node.js](https://nodejs.org/zh-cn/)
+    - 包管理工具：[npm](https://www.npmjs.com/)
+    - 框架：[Vue.js](https://v3.cn.vuejs.org/)
+    - 构建工具：[Vite](https://vitejs.dev/)
+    - UI框架
+        - 主UI框架：[Vant 4](https://vant-ui.github.io/vant/#/zh-CN)
+        - 可视化图表：[Echarts](https://echarts.apache.org/zh/index.html)
+        - 地图：[vue-tmap](https://didi.github.io/vue-tmap/)
+    - 路由：[Vue Router](https://next.router.vuejs.org/)
+    - 网络请求：[Axios](https://axios-http.com/)
