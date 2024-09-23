@@ -39,32 +39,34 @@ const back = () => history.back();
 </script>
 
 <template>
-  <van-nav-bar title="记录 - 详情" left-text="返回" left-arrow @click-left="back" fixed placeholder/>
-  <div class="container">
-    <div class="group">
-      <div class="group-title">图片</div>
-      <div class="group-content pd-0-20">
-        <div class="img-group">
-          <horizontal-scroll-images :images="detailInfo.images"/>
+  <div>
+    <van-nav-bar title="记录 - 详情" left-text="返回" left-arrow @click-left="back" fixed placeholder/>
+    <div class="container">
+      <div class="group">
+        <div class="group-title">图片</div>
+        <div class="group-content">
+          <div class="img-group">
+            <horizontal-scroll-images :images="detailInfo.images"/>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="group">
-      <div class="group-title">记录位置</div>
-      <div class="group-content pd-0-20">
-        <t-map :coordinate="coordinateTMapObject"/>
+      <div class="group">
+        <div class="group-title">记录位置</div>
+        <div class="group-content">
+          <t-map :coordinate="coordinateTMapObject"/>
+        </div>
       </div>
-    </div>
-    <div class="group">
-      <div class="group-title">详细信息</div>
-      <div class="group-content">
-        <van-cell title="记录 ID" :value="detailInfo.id"/>
-        <van-cell title="农田" :value="detailInfo.farmland"/>
-        <van-cell title="日期" :value="detailInfo.date"/>
-        <van-cell title="农药/化肥" :value="detailInfo.agroChemicals"/>
-        <van-cell title="用量" :value="`${detailInfo.dosageNumber.toFixed(2)}(${detailInfo.dosageUnit})`"/>
-        <van-cell title="备注" :value="detailInfo.note"/>
-        <van-cell title="位置" :value="coordinateText"/>
+      <div class="group">
+        <div class="group-title">详细信息</div>
+        <div class="group-content">
+          <van-cell title="记录 ID" :value="detailInfo.id"/>
+          <van-cell title="农田" :value="detailInfo.farmland"/>
+          <van-cell title="日期" :value="detailInfo.date"/>
+          <van-cell title="农药/化肥" :value="detailInfo.agroChemicals"/>
+          <van-cell title="用量" :value="`${detailInfo.dosageNumber.toFixed(2)}(${detailInfo.dosageUnit})`"/>
+          <van-cell title="备注" :value="detailInfo.note"/>
+          <van-cell title="位置" :value="coordinateText"/>
+        </div>
       </div>
     </div>
   </div>
@@ -73,25 +75,23 @@ const back = () => history.back();
 <style scoped lang="less">
 .container {
   background-color: #f7f7f7;
+  padding: 16px;
 }
 
 .group {
   margin-bottom: 20px;
 
   &-title {
-    padding: 10px 20px;
+    padding: 10px;
     font-weight: bold;
     font-size: 16px;
     color: #333;
   }
 
   &-content {
-    padding: 10px;
+    padding: 16px;
+    border-radius: 8px;
     background-color: #fff;
   }
-}
-
-.pd-0-20 {
-  padding: 0 20px;
 }
 </style>
