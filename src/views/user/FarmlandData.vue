@@ -40,7 +40,7 @@ const soilNutrients = ref([
         <geo-location-filed class="location-filed" v-model:location="location"/>
         <t-map :coordinate="coordinate"/>
       </div>
-      <van-cell-group style="margin: 0" title="当前位置土壤养分" inset>
+      <van-cell-group style="margin: 0" title="所在区域土壤养分" inset>
         <van-cell v-for="item in soilNutrients" :key="item.name" :title="item.name" :value="item.value"/>
       </van-cell-group>
     </div>
