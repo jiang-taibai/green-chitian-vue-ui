@@ -1,36 +1,15 @@
 <script setup>
 import {ref, defineEmits} from 'vue'
+import SmsField from "@/components/public/SMSField.vue";
 
 const emits = defineEmits(['forget', 'change-to-login'])
 
 const formData = ref({
-  authType: 'sms',
   account: '',
   sms: '',
   password: '',
-  confirmPassword:''
+  confirmPassword: ''
 })
-const sendingState = ref({
-  sent: false,
-  enable: true,
-  count: 0
-})
-
-const sendingConfig = {
-  intervalSeconds: 60,
-}
-const onSendSms = () => {
-  sendingState.value.sent = true;
-  sendingState.value.enable = false;
-  sendingState.value.count = sendingConfig.intervalSeconds;
-  const timer = setInterval(() => {
-    sendingState.value.count--;
-    if (sendingState.value.count <= 0) {
-      sendingState.value.enable = true;
-      clearInterval(timer);
-    }
-  }, 1000);
-}
 
 const onChangeToLogin = () => {
   emits('change-to-login');
@@ -50,19 +29,11 @@ const onForget = () => {
     <div class="form">
       <div class="input">
         <van-field v-model="formData.account" label="手机号" placeholder="请输入手机号"/>
-        <van-field v-show="formData.authType==='sms'" v-model="formData.sms" clearable label="验证码"
-                   placeholder="请输入短信验证码">
-          <template #button>
-            <div style="color: #1989fa" v-if="sendingState.enable" @click="onSendSms">
-              <span>{{ sendingState.sent ? '重新发送' : '发送验证码' }}</span>
-            </div>
-            <div v-else>{{ sendingState.count }}s</div>
-          </template>
-        </van-field>
-        <van-field  v-model="formData.password"
-                    label="密码" placeholder="请输入密码" type="password"/>
-        <van-field  v-model="formData.confirmPassword"
-                    label="确认密码" placeholder="请再次输入密码" type="password"/>
+        <sms-field :account="formData.account" v-model="formData.sms"/>
+        <van-field v-model="formData.password"
+                   label="密码" placeholder="请输入密码" type="password"/>
+        <van-field v-model="formData.confirmPassword"
+                   label="确认密码" placeholder="请再次输入密码" type="password"/>
       </div>
       <div class="buttons">
         <van-button type="primary" round block @click="onForget">确认</van-button>
@@ -95,6 +66,7 @@ const onForget = () => {
     color: #666;
   }
 }
+
 .form {
   flex: 1;
   display: flex;
@@ -102,21 +74,6 @@ const onForget = () => {
   justify-content: space-between;
 }
 
-.action {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16px;
-  margin-top: 10px;
-  font-size: small;
-
-  .left {
-    color: #1989fa;
-  }
-
-  .right {
-    color: #1989fa;
-  }
-}
 .buttons {
   margin-top: 20px;
   display: flex;
