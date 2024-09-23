@@ -84,11 +84,11 @@ const commit = (value) => {
       </div>
     </div>
     <div class="uploadImage">
-      <span class="span">上传图片:</span>
+      <div class="span">上传图片:</div>
       <van-uploader v-model="detailInfo.fileList" multiple :after-read="afterRead"/>
     </div>
     <div class="button">
-      <van-button type="primary" size="large" @click="commit">提交</van-button>
+      <van-button type="primary" @click="commit" block round size="small">提交</van-button>
     </div>
   </div>
 
@@ -105,18 +105,16 @@ const commit = (value) => {
 }
 
 .uploadImage {
-  margin: 16px;
+  margin: 10px;
   display: flex;
-  justify-content: left;
-  align-items: center;
-
+  flex-direction:row;
   .span {
-    margin-right: 20px;
+    display: flex;
+    align-items: center; /* 确保文字垂直居中 */
+    min-width: 70px;
   }
 }
-
 .button {
-  margin: 16px;
   border-radius: 15px;
 }
 
