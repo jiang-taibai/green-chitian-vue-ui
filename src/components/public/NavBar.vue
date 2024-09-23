@@ -11,12 +11,14 @@ const props = defineProps({
     default: false
   },
 });
-const back = () => history.back();
+const onLeftClick = () => history.back();
 </script>
 
 <template>
-  <van-nav-bar v-if="back" :title="title" left-text="返回" left-arrow @click-left="back" fixed placeholder/>
-  <van-nav-bar v-else :title="title" fixed placeholder/>
+  <div>
+    <van-nav-bar v-if="back" :title="title" left-text="返回" left-arrow @click-left="onLeftClick" fixed placeholder/>
+    <van-nav-bar v-else :title="title" fixed placeholder/>
+  </div>
 </template>
 
 <style scoped lang="less">
