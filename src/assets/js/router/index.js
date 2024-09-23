@@ -67,6 +67,7 @@ const userRoutes = [{
     path: '/user/profile',
     name: 'UserProfile',
     component: Profile,
+    redirect: '/user/profile/index',
     children: [{
         path: 'index',
         name: 'ProfileIndex',
