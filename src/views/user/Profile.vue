@@ -6,7 +6,7 @@ import UserTabBar from "@/components/user/UserTabBar.vue";
 <template>
   <div>
     <router-view/>
-    <user-tab-bar active="profile"/>
+    <user-tab-bar active="profile" :placeholder="false"/>
   </div>
 </template>
 

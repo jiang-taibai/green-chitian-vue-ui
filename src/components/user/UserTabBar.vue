@@ -16,13 +16,17 @@ const props = defineProps({
     validator: (value) => {
       return ['dashboard', 'encyclopedia', 'record', 'farmland-data', 'profile'].includes(value);
     },
-  }
+  },
+  placeholder: {
+    type: Boolean,
+    default: true,
+  },
 });
 const localActive = ref(props.active);
 </script>
 
 <template>
-  <van-tabbar v-model="localActive" placeholder>
+  <van-tabbar v-model="localActive" :placeholder="placeholder">
     <van-tabbar-item icon="home" icon-prefix="iconfont" name="dashboard"
                      replace :to="tabName2Route['dashboard']">主页
     </van-tabbar-item>

@@ -114,6 +114,7 @@ const commit = (value) => {
 .container {
   padding: 10px;
   border-bottom: none;
+  background: #F2F2F2;
 }
 
 * {

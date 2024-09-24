@@ -52,6 +52,7 @@ const soilNutrients = ref([
 <style scoped lang="less">
 .container {
   padding: 16px;
+  background: #F2F2F2;
 }
 
 .location {
