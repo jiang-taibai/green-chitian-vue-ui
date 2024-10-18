@@ -12,7 +12,7 @@
 # 技术选型
 
 - 前端
-    - 运行环境：[Node.js](https://nodejs.org/zh-cn/)
+    - 运行环境：[Node.js](https://nodejs.org/zh-cn/) 18.16.0
     - 包管理工具：[npm](https://www.npmjs.com/)
     - 框架：[Vue.js](https://v3.cn.vuejs.org/)
     - 构建工具：[Vite](https://vitejs.dev/)
