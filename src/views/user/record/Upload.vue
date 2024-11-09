@@ -2,6 +2,7 @@
 import {defineEmits, ref} from 'vue';
 import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import NavBar from "@/components/public/NavBar.vue";
+import AgroChemicalsInputFiled from "@/components/user/record/AgroChemicalsInputFiled.vue";
 
 const emits = defineEmits(['commit']);
 
@@ -40,24 +41,13 @@ const farmlandChooseForm = ref({
     {text: "农田10", value: "10"}
   ]
 })
-const dosageUnitChooseForm = ref({
-  show: false,
-  options: [
-    {text: "千克", value: "kg"},
-    {text: "克", value: "g"},
-    {text: "斤", value: "jin"},
-  ]
-})
+
 
 const onFarmlandChooseFinish = ({selectedOptions}) => {
   farmlandChooseForm.value.show = false;
   detailInfo.value.farmland = selectedOptions[0].text;
 };
-const onDosageUnitChooseFinish = ({selectedOptions}) => {
-  dosageUnitChooseForm.value.show = false;
-  detailInfo.value.dosageUnitText = selectedOptions[0].text;
-  detailInfo.value.dosageUnitValue = selectedOptions[0].value;
-};
+
 
 const commit = (value) => {
   emits('commit', {...value})
@@ -73,13 +63,6 @@ const commit = (value) => {
           <van-field v-model="detailInfo.farmland" is-link readonly required
                      label="农田" placeholder="请选择农田"
                      @click="farmlandChooseForm.show = true"/>
-          <van-field v-model="detailInfo.agroChemicals" required
-                     label="农药/化肥" placeholder="请输入农药/化肥"/>
-          <van-field v-model="detailInfo.dosageNumber" required
-                     type="number" label="用量" placeholder="请输入用量"/>
-          <van-field v-model="detailInfo.dosageUnitText" is-link readonly required
-                     label="用量单位" placeholder="请选择用量单位"
-                     @click="dosageUnitChooseForm.show = true"/>
           <van-field v-model="detailInfo.note" autosize
                      label="备注" placeholder="请输入备注" rows="1" type="textarea"/>
         </van-cell-group>
@@ -88,6 +71,9 @@ const commit = (value) => {
         <geo-location-filed :location="detailInfo.location"/>
       </div>
     </div>
+    <van-cell-group title="农药/化肥记录" style="background: none;">
+      <agro-chemicals-input-filed/>
+    </van-cell-group>
     <van-cell-group title="图片上传" style="background: none;">
       <div class="upload-container">
         <van-uploader class="uploader" v-model="detailInfo.fileList" multiple :after-read="afterRead"
@@ -101,11 +87,7 @@ const commit = (value) => {
       <van-picker :columns="farmlandChooseForm.options"
                   @cancel="farmlandChooseForm.show = false" @confirm="onFarmlandChooseFinish"/>
     </van-popup>
-    <van-popup v-model:show="dosageUnitChooseForm.show" round position="bottom">
-      <van-picker :columns="dosageUnitChooseForm.options"
-                  @cancel="dosageUnitChooseForm.show = false" @confirm="onDosageUnitChooseFinish"/>
 
-    </van-popup>
   </div>
 
 </template>
