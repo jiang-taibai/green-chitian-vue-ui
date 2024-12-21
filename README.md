@@ -22,3 +22,5 @@
         - 地图：[vue-tmap](https://didi.github.io/vue-tmap/)
     - 路由：[Vue Router](https://next.router.vuejs.org/)
     - 网络请求：[Axios](https://axios-http.com/)
+    - 数据验证库：[Joi](https://joi.dev/)
+    - 状态管理：[Pinia](https://pinia.vuejs.org/)

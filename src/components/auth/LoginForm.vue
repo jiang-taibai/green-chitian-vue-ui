@@ -1,14 +1,19 @@
 <script setup>
 import {ref, defineEmits} from 'vue'
 import SmsField from "@/components/public/SMSField.vue";
+import {login} from "@/assets/js/api/api-auth.js";
+import {showFailToast} from 'vant';
+import {useUserStore} from "@/assets/js/store/user-info.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
+const userStore = useUserStore();
 
 const formData = ref({
-  authType: 'sms',
-  account: '',
+  authType: 'password',
+  account: 'admin',
   sms: '',
-  password: ''
+  password: 'admin'
 })
 
 const onChangeAuthType = () => {
@@ -21,8 +26,23 @@ const onChangeToRegister = () => {
   emits('change-to-register');
 }
 const onLogin = () => {
-  // 先简单的触发事件，后续再补充登录逻辑
-  emits('login', {...formData.value});
+  if (formData.value.authType === 'sms') {
+    showFailToast('暂不支持短信登录');
+    return;
+  }
+  login({
+    username: formData.value.account,
+    password: formData.value.password,
+  }).then(res => {
+    if (isSuccessResponse(res)) {
+      userStore.setToken(res.data);
+      emits('login', {...formData.value});
+    } else {
+      showFailToast(res.message);
+    }
+  }).catch(err => {
+    showFailToast(err.message);
+  });
 }
 </script>
 
@@ -49,7 +69,7 @@ const onLogin = () => {
         </div>
       </div>
       <div class="buttons">
-        <van-button type="primary" round block @click="onLogin">登陆（测试跳过）</van-button>
+        <van-button type="primary" round block @click="onLogin">登陆</van-button>
         <van-button type="default" round block @click="onChangeToRegister">前往注册</van-button>
       </div>
     </div>

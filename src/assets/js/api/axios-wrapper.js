@@ -30,7 +30,7 @@ function createAxiosInstance(
                 // 在请求发送前进行处理，例如添加 token
                 const token = userStore.token;
                 if (token) {
-                    config.headers.Authorization = `Bearer ${token}`;
+                    config.headers.Authorization = `${token}`;
                 }
                 return config;
             },
@@ -69,16 +69,16 @@ function createAxiosInstance(
     );
 
     return {
-        get({url, params, data}) {
+        get(url, {params, data}) {
             return instance.get(url, {params, data});
         },
-        post({url, params, data}) {
+        post(url, {params, data}) {
             return instance.post(url, data, {params});
         },
-        put({url, params, data}) {
+        put(url, {params, data}) {
             return instance.put(url, data, {params});
         },
-        delete({url, params, data}) {
+        delete(url, {params, data}) {
             return instance.delete(url, {params, data});
         }
     };

@@ -1,39 +1,34 @@
-// userStore.js
 import {defineStore} from 'pinia';
-import {ref} from 'vue';
+import { ref, computed } from 'vue'
 import router from '@/assets/js/router';
 
 export const useUserStore = defineStore('user', () => {
-    // State
-    const token = ref(localStorage.getItem('token') || '');
-    const userInfo = ref(null);
+    // 📌 State
+    const token = ref(localStorage.getItem('token') || '')
 
-    // Getters
-    const isAuthenticated = () => !!token.value;
+    // 📌 Getters
+    const isAuthenticated = computed(() => !!token.value)
 
-    // Actions
-    const setUser = ({token, userData}) => {
-        userInfo.value = userData;
-        token.value = token;
-        localStorage.setItem('token', token);
-    };
+    // 📌 Actions
+    const setToken = (newToken) => {
+        token.value = newToken
+        localStorage.setItem('token', newToken)
+    }
 
     const clearUser = async () => {
-        userInfo.value = null;
-        token.value = '';
-        localStorage.removeItem('token');
+        token.value = ''
+        localStorage.removeItem('token')
         try {
-            await router.push({name: 'Auth'});
+            await router.push({name: 'Auth'})
         } catch (err) {
-            console.error('路由跳转失败', err);
+            console.error('路由跳转失败', err)
         }
-    };
+    }
 
     return {
         token,
-        userInfo,
         isAuthenticated,
-        setUser,
+        setToken,
         clearUser,
-    };
-});
+    }
+})

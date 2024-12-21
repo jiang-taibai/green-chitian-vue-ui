@@ -10,7 +10,7 @@ const router = useRouter();
 const tab = ref('login');
 const onLogin = (data) => {
   showSuccessToast('登陆成功');
-  router.push('/user/dashboard');
+  router.push({name: 'UserDashboard'});
 }
 </script>
 
