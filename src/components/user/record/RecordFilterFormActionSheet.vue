@@ -1,6 +1,8 @@
 <script setup>
-import {ref, defineProps, defineEmits, watch} from 'vue';
+import {ref, defineProps, defineEmits, watch, onMounted} from 'vue';
 import {showFailToast} from 'vant';
+import {userFields} from "@/assets/js/api/api-record.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 
 const props = defineProps({
   show: {
@@ -11,7 +13,7 @@ const props = defineProps({
     type: Object,
     default: () => ({
       farmlandText: "所有农田",
-      farmlandValue: "0",
+      farmlandValue: void 0,
       dateText: "所有时间段",
       dateStart: "",
       dateEnd: "",
@@ -20,6 +22,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:show', 'update:filterData']);
 
+/* =============== 父子组件数据绑定管理 ================== */
 // 实现子组件的双向绑定，同时保持父组件的数据不变
 const showFilterActionSheet = ref(false);
 watch(() => props.show, (value) => {
@@ -33,19 +36,7 @@ watch(() => props.filterData, (value) => {
   localFilterData.value = {...value};
 });
 
-const farmlands = [
-  {text: "所有农田", value: "0"},
-  {text: "农田1", value: "1"},
-  {text: "农田2", value: "2"},
-  {text: "农田3", value: "3"},
-  {text: "农田4", value: "4"},
-  {text: "农田5", value: "5"},
-  {text: "农田6", value: "6"},
-  {text: "农田7", value: "7"},
-  {text: "农田8", value: "8"},
-  {text: "农田9", value: "9"},
-  {text: "农田10", value: "10"},
-];
+const farmlands = ref([]);
 const showFarmlandPicker = ref(false);
 /**
  * 确认选择农田
@@ -59,6 +50,7 @@ const onConfirmFarmland = ({selectedOptions}) => {
 
 const dateRangeTypeChecked = ref("all");
 
+/* =============== 日期选择器 ================== */
 const showDatePicker = ref(false);
 const formatDate = (date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 const minDate = new Date(2024, 0, 1);
@@ -77,6 +69,9 @@ const onConfirmDatePicker = (values) => {
   localFilterData.value.dateEnd = formatedEndDate;
 };
 
+/**
+ * 确认筛选条件
+ */
 const onConfirmActionSheet = () => {
   // 校验筛选条件
   if (dateRangeTypeChecked.value === 'all' || localFilterData.value.dateText === "所有时间段") {
@@ -92,6 +87,28 @@ const onConfirmActionSheet = () => {
   emit('update:filterData', {...localFilterData.value});
   showFilterActionSheet.value = false;
 };
+
+/* =============== 初始化 ================== */
+onMounted(() => {
+  init();
+})
+const init = () => {
+  initFarmlands();
+}
+const initFarmlands = () => {
+  userFields().then(res => {
+    if (isSuccessResponse(res)) {
+      const farmlandList = [];
+      res.data.forEach(/** @param item {Field} */item => {
+        farmlandList.push({
+          text: `${item.committee}-${item.fieldClass} #${item.id}`,
+          value: item.id
+        });
+      });
+      farmlands.value = farmlandList;
+    }
+  });
+}
 </script>
 
 <template>
