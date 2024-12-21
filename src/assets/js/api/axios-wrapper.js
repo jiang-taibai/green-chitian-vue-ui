@@ -69,17 +69,17 @@ function createAxiosInstance(
     );
 
     return {
-        get(url, {params, data}) {
-            return instance.get(url, {params, data});
+        get(url, {params, data, responseType}) {
+            return instance.get(url, {params, data, responseType});
         },
-        post(url, {params, data}) {
-            return instance.post(url, data, {params});
+        post(url, {params, data, responseType}) {
+            return instance.post(url, data, {params, responseType});
         },
-        put(url, {params, data}) {
-            return instance.put(url, data, {params});
+        put(url, {params, data, responseType}) {
+            return instance.put(url, data, {params, responseType});
         },
-        delete(url, {params, data}) {
-            return instance.delete(url, {params, data});
+        delete(url, {params, data, responseType}) {
+            return instance.delete(url, {params, data, responseType});
         }
     };
 }
