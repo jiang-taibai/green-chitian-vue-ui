@@ -1,45 +1,136 @@
 <script setup>
-import {ref} from "vue";
-import {v4 as uuid} from 'uuid';
-import recordCoverDemo01 from "@/assets/img/record/demo-01.jpg";
+import {computed, defineProps, ref, watch} from "vue";
 import RecordCard from "@/components/user/record/RecordCard.vue";
+import {getFertilizations} from "@/assets/js/api/api-record.js";
+import {isSuccessPageResponse} from "@/assets/js/api/response-utils.js";
+import {getImage} from "@/assets/js/api/api-file.js";
+import {validate} from "uuid";
+import validator from "@/assets/js/public/validator.js";
 
-const list = ref([]);
+/* ============== 参数 ============== */
+const props = defineProps({
+  filterData: {
+    type: Object,
+    default: () => ({
+      farmlandText: "所有农田",
+      farmlandValue: void 0,
+      dateText: "所有时间段",
+      dateStart: "",
+      dateEnd: "",
+    }),
+  },
+});
+
+/* ============== 数据 ============== */
+/**
+ * @type {import('vue').Ref<UnwrapRef<FertilizationRecord[]>, UnwrapRef<FertilizationRecord[]> | FertilizationRecord[]>}
+ */
+const records = ref([]);
+/**
+ * @type {[{}] extends [import('vue').Ref] ? IfAny<{}, import('vue').Ref<{}>, {}> : import('vue').Ref<UnwrapRef<{}>, UnwrapRef<{}> | {}>}
+ */
+const covers = ref({});
 const loading = ref(false);
-const finished = ref(false);
+const pagination = ref({
+  current: 0,
+  size: 10,
+  pages: 100,
+  total: 100,
+});
 
-const demoData = () => {
-  return {
-    id: uuid(),
-    cover: recordCoverDemo01,
-    date: "2021-01-01 00:00:00",
-    farmland: "未知农田",
-    agroChemicals: "未知化肥/农药",
-    dosageNumber: 0.00,
-    dosageUnit: "g",
-    note: "无备注信息"
-  };
-};
-
-const onLoad = () => {
-  setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
-      list.value.push(demoData());
+/* ============== 方法 ============== */
+/**
+ * 查询记录
+ */
+const queryRecords = () => {
+  loading.value = true;
+  getFertilizations({
+    fieldId: props.filterData.farmlandValue,
+    size: pagination.value.size,
+    current: pagination.value.current + 1,
+    startDate: props.filterData.dateStart,
+    endDate: props.filterData.dateEnd,
+  }).then(/** @param res {Page<FertilizationRecord>} */(res) => {
+    if (!isSuccessPageResponse(res)) {
+      return;
     }
+    pagination.value = {
+      current: res.current,
+      size: res.size,
+      pages: res.pages,
+      total: res.total,
+    }
+    for (let record of res.records) {
+      if (validator.isEmptyArray(record.imageIds)) {
+        covers.value[record.id] = void 0;
+        continue;
+      }
+      // 如果已经获取过封面图片，则跳过
+      // 出现场景：比如说查询多次，可能会重复获取图片
+      if (covers.value[record.id]) {
+        continue;
+      }
+      const imageId = record.imageIds[0]
+      getImage(imageId).then((res) => {
+        try {
+          covers.value[record.id] = URL.createObjectURL(res);
+        } catch (e) {
+          covers.value[record.id] = void 0;
+          console.error("获取图片失败：", e);
+          console.error("图片ID：", imageId);
+        }
+      });
+    }
+    records.value.push(...res.records);
+  }).finally(() => {
     loading.value = false;
-    if (list.value.length >= 40) {
-      finished.value = true;
-    }
-  }, 300);
+  });
+}
+
+/**
+ * 加载更多，当滚动到底部时触发
+ */
+const onLoad = () => {
+  if (finished.value) {
+    return;
+  }
+  queryRecords();
 };
+
+/**
+ * 重置分页配置和数据
+ */
+const resetQueryFormAndData = () => {
+  pagination.value = {
+    current: 0,
+    size: 10,
+    pages: 100,
+    total: 100,
+  };
+  records.value = [];
+}
+
+/* ============== 监听 ============== */
+/**
+ * 监听：当筛选条件变化时，重置分页配置和数据，然后查询记录
+ */
+watch(() => props.filterData, () => {
+  resetQueryFormAndData();
+  queryRecords();
+}, {immediate: true});
+
+/* ============== 计算属性 ============== */
+const finished = computed(() => {
+  return pagination.value.current >= pagination.value.pages;
+});
 </script>
 
 <template>
   <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-    <record-card class="list-item" v-for="item in list" :key="item.id"
-                 :id="item.id" :cover="item.cover" :date="item.date" :farmland="item.farmland"
-                 :agroChemicals="item.agroChemicals" :dosageNumber="item.dosageNumber"
-                 :dosageUnit="item.dosageUnit" :note="item.note"/>
+    <record-card class="list-item" v-for="(item, idx) in records" :key="item.id"
+                 :id="item.id" :cover="covers[item.id]" :date="item.applicationDate" :farmland="item.feildName"
+                 :agroChemicals="item.fertilizerName" :dosageNumber="item.quantityUsed"
+                 :dosageUnit="item.unit" :note="item.notes"/>
   </van-list>
 </template>
 
