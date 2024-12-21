@@ -1,14 +1,14 @@
 <script setup>
 import {defineProps, computed} from "vue";
 import {useRouter} from "vue-router";
-import {v4 as uuid} from 'uuid';
+import validator from "@/assets/js/public/validator.js";
 
 const router = useRouter();
 
 const props = defineProps({
   id: {
-    type: String,
-    default: uuid()
+    type: Number,
+    default: 0
   },
   cover: {
     type: String,
@@ -41,22 +41,27 @@ const props = defineProps({
 });
 
 const agroChemicalsDosage = computed(() => {
-  return `${props.agroChemicals} ${props.dosageNumber.toFixed(2)}(${props.dosageUnit})`;
+  const agroChemicals = validator.isEmptyString(props.agroChemicals, true) ? "未知化肥/农药" : props.agroChemicals;
+  return `${agroChemicals} ${props.dosageNumber.toFixed(2)}(${props.dosageUnit})`;
 });
 
 const openDetail = () => {
   router.push({name: 'RecordDetail', params: {id: props.id}});
 };
+
 </script>
 
 <template>
   <div>
     <div class="container card" @click="openDetail">
       <div class="img">
-        <van-image width="30vw" height="30vw" fit="cover" :src="cover" error-icon="image-error" icon-prefix="iconfont"/>
+        <van-image width="30vw" height="30vw" fit="cover" :src="cover">
+          <template v-slot:error>暂无图片</template>
+          <template v-slot:loading>暂无图片</template>
+        </van-image>
       </div>
       <div class="info">
-        <van-text-ellipsis class="farmland" :content="farmland"/>
+        <van-text-ellipsis class="farmland" :content="farmland ? farmland : '未知田地'"/>
         <div class="date">{{ date }}</div>
         <van-text-ellipsis class="agro" :content="agroChemicalsDosage"/>
         <van-text-ellipsis class="note" :content="note"/>
