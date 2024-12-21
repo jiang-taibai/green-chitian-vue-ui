@@ -1,11 +1,12 @@
 <script setup>
 import {ref, computed} from 'vue'
+import {v4 as uuidv4} from 'uuid'
 
 const activeAgroChemicalsItem = ref([])
 const agroChemicalsInfos = ref([
-  {agroChemicals: '尿素', dosageNumber: '10', dosageUnitText: '千克', dosageUnitValue: 'kg', uuid: '1'},
-  {agroChemicals: '有机肥', dosageNumber: '20', dosageUnitText: '千克', dosageUnitValue: 'kg', uuid: '2'},
-  {agroChemicals: '杀虫剂', dosageNumber: '30', dosageUnitText: '毫升', dosageUnitValue: 'ml', uuid: '3'},
+  {agroChemicals: '尿素', dosageNumber: 10.1, dosageUnitText: '千克', dosageUnitValue: 'kg', uuid: uuidv4()},
+  {agroChemicals: '有机肥', dosageNumber: 20.3, dosageUnitText: '千克', dosageUnitValue: 'kg', uuid: uuidv4()},
+  {agroChemicals: '杀虫剂', dosageNumber: 30.9, dosageUnitText: '毫升', dosageUnitValue: 'ml', uuid: uuidv4()},
 ])
 
 const dosageUnitChooseForm = {
@@ -29,9 +30,23 @@ const onDosageUnitChooseFinish = ({selectedOptions}) => {
   agroChemicalsInfos.value[dosageUnitChooseForm.editIndex].dosageUnitValue = selectedOptions[0].value;
 };
 
+const addAgroChemicalsItem = () => {
+  agroChemicalsInfos.value.push({
+    agroChemicals: '未知',
+    dosageNumber: 0.0,
+    dosageUnitText: '千克',
+    dosageUnitValue: 'kg',
+    uuid: uuidv4()
+  })
+}
+
+const removeAgroChemicalsItem = (index) => {
+  agroChemicalsInfos.value.splice(index, 1)
+}
+
 const collapseItemTitles = computed(() => {
   return agroChemicalsInfos.value.map(agroChemicalsInfo => {
-    return `${agroChemicalsInfo.agroChemicals} ${agroChemicalsInfo.dosageNumber}(${agroChemicalsInfo.dosageUnitText})`
+    return `${agroChemicalsInfo.agroChemicals} ${agroChemicalsInfo.dosageNumber} ${agroChemicalsInfo.dosageUnitText}`
   })
 })
 </script>
@@ -50,8 +65,14 @@ const collapseItemTitles = computed(() => {
         <van-field v-model="agroChemicalsInfo.dosageUnitText" is-link readonly required
                    label="用量单位" placeholder="请选择用量单位"
                    @click="displayDosageUnitChooseForm(index)"/>
+        <div class="remove-agro-btn-wrapper">
+          <van-button type="danger" size="small" block
+                      @click="removeAgroChemicalsItem(index)">删除</van-button>
+        </div>
       </van-collapse-item>
-      <van-button type="success" size="small" block class="add-agro-btn">添加农化产品</van-button>
+      <van-button type="success" size="small" block class="add-agro-btn"
+                  @click="addAgroChemicalsItem">添加农化产品
+      </van-button>
     </van-collapse>
     <van-popup v-model:show="showDosageUnitPopup" round position="bottom">
       <van-picker :columns="dosageUnitChooseForm  .options"
@@ -66,12 +87,16 @@ const collapseItemTitles = computed(() => {
   margin-top: 10px;
 }
 
+.remove-agro-btn-wrapper {
+  padding: 0 16px;
+}
+
 .collapse-item {
-  /deep/ .van-collapse-item__content {
+  :deep(.van-collapse-item__content) {
     padding: 0 !important;
   }
 
-  /deep/ .van-collapse-item__title {
+  :deep(.van-collapse-item__title) {
     font-weight: bold;
   }
 }
