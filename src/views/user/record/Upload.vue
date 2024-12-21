@@ -87,9 +87,7 @@ const commit = (value) => {
       <van-picker :columns="farmlandChooseForm.options"
                   @cancel="farmlandChooseForm.show = false" @confirm="onFarmlandChooseFinish"/>
     </van-popup>
-
   </div>
-
 </template>
 
 <style scoped lang="less">
