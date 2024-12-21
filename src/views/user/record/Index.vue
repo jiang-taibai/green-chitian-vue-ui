@@ -7,7 +7,7 @@ import NavBar from "@/components/public/NavBar.vue";
 const recordFilterFormActionSheetShow = ref(false);
 const recordFilterFormActionSheetData = ref({
   farmlandText: "所有农田",
-  farmlandValue: "0",
+  farmlandValue: void 0,
   dateText: "所有时间段",
   dateStart: "",
   dateEnd: "",
@@ -28,7 +28,7 @@ const recordFilterFormActionSheetFormValue = computed(() => {
                   type="primary" block round size="small" to="/user/record/upload">添加记录
       </van-button>
     </div>
-    <record-card-list/>
+    <record-card-list :filter-data="recordFilterFormActionSheetData"/>
     <record-filter-form-action-sheet v-model:show="recordFilterFormActionSheetShow"
                                      v-model:filterData="recordFilterFormActionSheetData"/>
     <van-back-top bottom="10vh"/>
