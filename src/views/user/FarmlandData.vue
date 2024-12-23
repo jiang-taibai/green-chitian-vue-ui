@@ -30,6 +30,7 @@ const filterData = ref({
     value: void 0,
   }
 })
+const secondPickerFarmlandOptions = ref([])
 const soilNutrients = ref([
   {name: "坐标", value: 0},
   {name: "氮", value: "0.1g/kg"},
@@ -65,7 +66,29 @@ const onConfirmFieldClass = ({selectedOptions}) => {
   pickerShow.value.fieldClass = false;
   filterData.value.fieldClass = selectedOptions[0]
 };
+/**
+ * 第二次挑选农田
+ * @param selectedOptions
+ */
+const onSecondConfirmFarmland = ({selectedOptions}) => {
+  pickerShow.value.secondPickerFarmland = false;
+  filterData.value.secondPickerFarmland = selectedOptions[0]
+};
 
+/**
+ * 筛选，如果获得多个农地，设置默认选择第一个二次挑选
+ */
+const doFilter = () => {
+  console.log(filterData.value)
+}
+/**
+ * 二次挑选农地时触发
+ */
+const fetchFieldBlockFertilizer = () => {
+  console.log('fetchFieldBlockFertilizer')
+}
+
+/* =============== 计算属性 ================== */
 const selectedFarmland = computed(() => filterData.value.farmland.value !== void 0)
 </script>
 
@@ -91,6 +114,9 @@ const selectedFarmland = computed(() => filterData.value.farmland.value !== void
     <farmland-choose-form-picker-popup v-model:show="pickerShow.farmland" @confirm="onConfirmFarmland"/>
     <committee-picker-popup v-model:show="pickerShow.committee" @confirm="onConfirmCommittee"/>
     <field-class-picker-popup v-model:show="pickerShow.fieldClass" @confirm="onConfirmFieldClass"/>
+    <farmland-choose-form-picker-popup v-model:show="pickerShow.secondPickerFarmland" :init="false"
+                                       :preset-options="secondPickerFarmlandOptions"
+                                       @confirm="onSecondConfirmFarmland"/>
     <user-tab-bar active="farmland-data"/>
   </div>
 </template>
