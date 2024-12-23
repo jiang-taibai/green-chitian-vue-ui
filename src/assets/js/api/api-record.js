@@ -28,3 +28,10 @@ export const getFertilizations = ({fieldId, size, current, startDate, endDate}) 
         }
     });
 }
+
+/**
+ * 查询化肥类型和每个类型下的具体肥料
+ */
+export const getAllFertilizations = () => {
+    return api.get('/fertilizer/types/all', {})
+}

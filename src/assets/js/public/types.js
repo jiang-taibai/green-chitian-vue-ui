@@ -44,3 +44,30 @@
  * @property {String} feildName         田地字段名称
  * @property {String} fertilizerName    肥料名称
  */
+
+/**
+ * @typedef {Object} FertilizerType   化肥类型
+ * @property {Number} id              类型 ID
+ * @property {String} typeName        类型名称
+ * @property {Number} parentId        父类型 ID
+ * @property {Array.<FertilizerType>} children 子类型数组
+ * @property {Array.<Fertilizer>} fertilizers  化肥数组
+ */
+
+/**
+ * @typedef {Object} Fertilizer       化肥
+ * @property {Number} id              化肥 ID
+ * @property {String} name            化肥名称
+ * @property {Number} typeId          化肥类型 ID
+ * @property {String} composition      化肥成分
+ * @property {String} manufacturer     生产厂家
+ * @property {String} productionDate   生产日期
+ * @property {String} expiryDate       过期日期
+ * @property {String} batchNumber      批次号
+ * @property {Number} price            价格
+ * @property {String} unit             计量单位
+ * @property {Number} stockQuantity    库存数量
+ * @property {String} description      描述
+ * @property {String} createTime       创建时间
+ * @property {String} updateTime       更新时间
+ */
