@@ -3,7 +3,7 @@ import {ref} from 'vue';
 import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import NavBar from "@/components/public/NavBar.vue";
 import AgroChemicalsInputFiled from "@/components/user/record/AgroChemicalsInputFiled.vue";
-import FarmlandChooseFormPickerPopup from "@/components/public/FarmlandChooseFormPickerPopup.vue";
+import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
 
 /* =============== 数据 ================== */
 const farmlandChooseForm = ref({
