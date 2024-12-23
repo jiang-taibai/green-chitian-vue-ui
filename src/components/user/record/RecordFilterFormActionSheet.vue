@@ -3,6 +3,7 @@ import {ref, defineProps, defineEmits, watch, onMounted} from 'vue';
 import {showFailToast} from 'vant';
 import {userFields} from "@/assets/js/api/api-record.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import FarmlandChooseFormPickerPopup from "@/components/public/FarmlandChooseFormPickerPopup.vue";
 
 const props = defineProps({
   show: {
@@ -93,61 +94,42 @@ onMounted(() => {
   init();
 })
 const init = () => {
-  initFarmlands();
-}
-const initFarmlands = () => {
-  userFields().then(res => {
-    if (isSuccessResponse(res)) {
-      const farmlandList = [];
-      res.data.forEach(/** @param item {Field} */item => {
-        farmlandList.push({
-          text: `${item.committee}-${item.fieldClass} #${item.id}`,
-          value: item.id
-        });
-      });
-      farmlands.value = farmlandList;
-    }
-  });
 }
 </script>
 
 <template>
-  <van-action-sheet v-model:show="showFilterActionSheet" title="筛选记录">
-    <div class="action-sheet-container">
-      <van-field v-model="localFilterData.farmlandText" is-link readonly
-                 label="选择农田" placeholder="选择农田"
-                 @click="showFarmlandPicker = true"/>
-      <van-radio-group v-model="dateRangeTypeChecked">
-        <van-cell-group style="margin: 0" inset>
-          <van-cell style="padding: 10px 16px" title="所有时间段" clickable @click="dateRangeTypeChecked = 'all'">
-            <template #right-icon>
-              <van-radio name="all"/>
-            </template>
-          </van-cell>
-          <van-cell style="padding: 10px 16px" title="部分时间段" clickable @click="dateRangeTypeChecked = 'part'">
-            <template #right-icon>
-              <van-radio name="part"/>
-            </template>
-          </van-cell>
-          <van-cell v-show="false" title="仅用来生成虚线，请勿删除"/>
-        </van-cell-group>
-      </van-radio-group>
-      <van-cell title="选择日期区间" :value="localFilterData.dateText" @click="showDatePicker = true"
-                v-show="dateRangeTypeChecked==='part'" class="pd-0-20"/>
-      <van-calendar v-model:show="showDatePicker" type="range"
-                    :min-date="minDate" :max-date="maxDate"
-                    @confirm="onConfirmDatePicker"/>
-      <van-button block round type="primary" size="small" style="margin-top: 16px" @click="onConfirmActionSheet">确认
-      </van-button>
-    </div>
-  </van-action-sheet>
-  <van-popup v-model:show="showFarmlandPicker" round position="bottom">
-    <van-picker
-        :columns="farmlands"
-        @cancel="showFarmlandPicker = false"
-        @confirm="onConfirmFarmland"
-    />
-  </van-popup>
+  <div>
+    <van-action-sheet v-model:show="showFilterActionSheet" title="筛选记录">
+      <div class="action-sheet-container">
+        <van-field v-model="localFilterData.farmlandText" is-link readonly
+                   label="选择农田" placeholder="选择农田"
+                   @click="showFarmlandPicker = true"/>
+        <van-radio-group v-model="dateRangeTypeChecked">
+          <van-cell-group style="margin: 0" inset>
+            <van-cell style="padding: 10px 16px" title="所有时间段" clickable @click="dateRangeTypeChecked = 'all'">
+              <template #right-icon>
+                <van-radio name="all"/>
+              </template>
+            </van-cell>
+            <van-cell style="padding: 10px 16px" title="部分时间段" clickable @click="dateRangeTypeChecked = 'part'">
+              <template #right-icon>
+                <van-radio name="part"/>
+              </template>
+            </van-cell>
+            <van-cell v-show="false" title="仅用来生成虚线，请勿删除"/>
+          </van-cell-group>
+        </van-radio-group>
+        <van-cell title="选择日期区间" :value="localFilterData.dateText" @click="showDatePicker = true"
+                  v-show="dateRangeTypeChecked==='part'" class="pd-0-20"/>
+        <van-calendar v-model:show="showDatePicker" type="range"
+                      :min-date="minDate" :max-date="maxDate"
+                      @confirm="onConfirmDatePicker"/>
+        <van-button block round type="primary" size="small" style="margin-top: 16px" @click="onConfirmActionSheet">确认
+        </van-button>
+      </div>
+    </van-action-sheet>
+    <farmland-choose-form-picker-popup :show.sync="showFarmlandPicker" @confirm="onConfirmFarmland"/>
+  </div>
 </template>
 
 <style scoped>
