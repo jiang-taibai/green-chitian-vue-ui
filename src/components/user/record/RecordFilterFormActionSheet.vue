@@ -1,9 +1,7 @@
 <script setup>
 import {ref, defineProps, defineEmits, watch, onMounted} from 'vue';
 import {showFailToast} from 'vant';
-import {userFields} from "@/assets/js/api/api-record.js";
-import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
-import FarmlandChooseFormPickerPopup from "@/components/public/FarmlandChooseFormPickerPopup.vue";
+import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
 
 const props = defineProps({
   show: {
