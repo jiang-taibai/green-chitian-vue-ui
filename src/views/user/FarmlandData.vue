@@ -1,28 +1,37 @@
 <script setup>
 import {computed, ref} from "vue";
 import UserTabBar from "@/components/user/UserTabBar.vue";
-import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
-import TMap from "@/components/public/TMap.vue";
 import NavBar from "@/components/public/NavBar.vue";
+import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
+import CommitteePickerPopup from "@/components/public/picker-popup/CommitteePickerPopup.vue";
+import FieldClassPickerPopup from "@/components/public/picker-popup/FieldClassPickerPopup.vue";
 
-const location = ref({
-  text: "未知位置",
-  latitude: 39.924232,
-  longitude: 116.403406,
+const pickerShow = ref({
+  farmland: false,
+  committee: false,
+  fieldClass: false,
+  secondPickerFarmland: false,
 })
-
-const coordinate = computed(() => {
-  return {
-    latitude: location.value.latitude,
-    longitude: location.value.longitude,
+const filterData = ref({
+  farmland: {
+    text: '全部',
+    value: void 0,
+  },
+  committee: {
+    text: '全部',
+    value: void 0,
+  },
+  fieldClass: {
+    text: '全部',
+    value: void 0,
+  },
+  secondPickerFarmland: {
+    text: '',
+    value: void 0,
   }
 })
-
-const coordinateText = computed(() => {
-  return `(${location.value.latitude}, ${location.value.longitude})`
-})
 const soilNutrients = ref([
-  {name: "坐标", value: coordinateText},
+  {name: "坐标", value: 0},
   {name: "氮", value: "0.1g/kg"},
   {name: "磷", value: "0.2g/kg"},
   {name: "钾", value: "0.3g/kg"},
@@ -31,20 +40,57 @@ const soilNutrients = ref([
   {name: "水分", value: "20%"},
   {name: "温度", value: "20℃"},
 ])
+
+/**
+ * 确认选择农田
+ * @param selectedOptions 选择的农田
+ */
+const onConfirmFarmland = ({selectedOptions}) => {
+  pickerShow.value.farmland = false;
+  filterData.value.farmland = selectedOptions[0]
+};
+/**
+ * 确认选择委员会
+ * @param selectedOptions 选择的委员会
+ */
+const onConfirmCommittee = ({selectedOptions}) => {
+  pickerShow.value.committee = false;
+  filterData.value.committee = selectedOptions[0]
+};
+/**
+ * 确认选择田块分类
+ * @param selectedOptions 选择的田块分类
+ */
+const onConfirmFieldClass = ({selectedOptions}) => {
+  pickerShow.value.fieldClass = false;
+  filterData.value.fieldClass = selectedOptions[0]
+};
+
+const selectedFarmland = computed(() => filterData.value.farmland.value !== void 0)
 </script>
 
 <template>
   <div>
     <nav-bar title="土壤养分"/>
     <div class="container">
-      <div class="location">
-        <geo-location-filed class="location-filed" v-model:location="location"/>
-        <t-map :coordinate="coordinate"/>
-      </div>
-      <van-cell-group style="margin: 0" title="所在区域土壤养分" inset>
+      <van-cell-group style="margin: 0" title="地块筛选" inset>
+        <van-field v-model="filterData.farmland.text" is-link readonly label="地块"
+                   @click="pickerShow.farmland = true"/>
+        <van-field v-show="!selectedFarmland" v-model="filterData.committee.text" is-link readonly label="委员会"
+                   @click="pickerShow.committee = true"/>
+        <van-field v-show="!selectedFarmland" v-model="filterData.fieldClass.text" is-link readonly label="分类"
+                   @click="pickerShow.fieldClass = true"/>
+      </van-cell-group>
+      <van-cell-group style="margin: 0" title="地块选择" inset>
+        <van-field v-model="filterData.farmland.text" is-link readonly label="地块"/>
+      </van-cell-group>
+      <van-cell-group style="margin: 0" title="地块土壤养分" inset>
         <van-cell v-for="item in soilNutrients" :key="item.name" :title="item.name" :value="item.value"/>
       </van-cell-group>
     </div>
+    <farmland-choose-form-picker-popup v-model:show="pickerShow.farmland" @confirm="onConfirmFarmland"/>
+    <committee-picker-popup v-model:show="pickerShow.committee" @confirm="onConfirmCommittee"/>
+    <field-class-picker-popup v-model:show="pickerShow.fieldClass" @confirm="onConfirmFieldClass"/>
     <user-tab-bar active="farmland-data"/>
   </div>
 </template>
