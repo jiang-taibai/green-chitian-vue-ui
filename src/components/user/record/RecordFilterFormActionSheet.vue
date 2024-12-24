@@ -126,7 +126,7 @@ const init = () => {
         </van-button>
       </div>
     </van-action-sheet>
-    <farmland-choose-form-picker-popup :show.sync="showFarmlandPicker" @confirm="onConfirmFarmland"/>
+    <farmland-choose-form-picker-popup v-model:show="showFarmlandPicker" @confirm="onConfirmFarmland"/>
   </div>
 </template>
 
