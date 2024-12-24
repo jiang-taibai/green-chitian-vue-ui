@@ -39,3 +39,14 @@ export const tryConvertDecimalToFixed2 = (value) => {
     }
     return value
 }
+
+/**
+ * 将日期转换为 YYYY-MM-DD 格式
+ * @param date  {Date}  日期
+ */
+export const convertDateToYYYYMMDD = (date) => {
+    if (date instanceof Date) {
+        return date.toISOString().split('T')[0];
+    }
+    return date;
+}
