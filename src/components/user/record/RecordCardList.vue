@@ -56,7 +56,6 @@ const queryRecords = () => {
     const data = res.data;
     pagination.value = {
       current: data.current,
-      size: data.size,
       pages: data.pages,
       total: data.total,
     }
