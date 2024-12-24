@@ -4,6 +4,9 @@ import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import NavBar from "@/components/public/NavBar.vue";
 import AgroChemicalsInputFiled from "@/components/user/record/AgroChemicalsInputFiled.vue";
 import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
+import {convertDateToYYYYMMDD} from "@/assets/js/public/convert.js";
+import {uploadImage} from "@/assets/js/api/api-file.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 
 /* =============== 数据 ================== */
 const farmlandChooseForm = ref({
@@ -13,20 +16,11 @@ const farmlandChooseForm = ref({
 })
 const note = ref('')
 const location = ref({
+  text: "未知位置",
   latitude: 0.00,
   longitude: 0.00,
 })
-const agroChemicalInfos = ref([
-  {
-    agroChemicals: {
-      name: '',
-      id: void 0,
-    },
-    dosageNumber: 0.00,
-    dosageUnitText: "千克",
-    dosageUnitValue: "kg",
-  }
-])
+const agroChemicalInfos = ref([])
 const fileList = ref([])
 
 /* =============== 方法 ================== */
@@ -42,14 +36,48 @@ const onFarmlandChooseFinish = ({selectedOptions}) => {
 /**
  * 提交表单
  */
-const onCommit = () => {
-  console.log({
-    farmland: farmlandChooseForm.value.value,
-    note: note.value,
-    location: location.value,
-    agroChemicalInfos: agroChemicalInfos.value,
-    fileList: fileList.value,
-  });
+const onCommit = async () => {
+  /**
+   * 农药化肥记录的 DTO
+   * @type {import('@/assets/js/public/types').FertilizationRecordDto}
+   */
+  const fertilizationRecordDto = initFertilizationRecordDto();
+  const imageIds = await uploadImages();
+}
+
+/**
+ * 初始化农药化肥记录的 DTO
+ */
+const initFertilizationRecordDto = () => {
+  /**
+   * 农药化肥记录的 DTO
+   * @type {import('@/assets/js/public/types').FertilizationRecordDto}
+   */
+  const fertilizationRecordDto = {}
+  fertilizationRecordDto.fieldBlockId = farmlandChooseForm.value.value;
+  fertilizationRecordDto.applicationDate = convertDateToYYYYMMDD(new Date());
+  fertilizationRecordDto.notes = note.value;
+  fertilizationRecordDto.imageIds = [];
+  fertilizationRecordDto.location = location.value.text;
+  fertilizationRecordDto.fertilizerCards = [];
+  return fertilizationRecordDto;
+}
+
+/**
+ * 上传图片
+ */
+const uploadImages = async () => {
+  const imageIds = [];
+  for (let i = 0; i < fileList.value.length; i++) {
+    const file = fileList.value[i].file;
+    const res = await uploadImage(file);
+    if (isSuccessResponse(res)) {
+      imageIds.push(res.data);
+    } else {
+      console.error(res.message);
+    }
+  }
+  return imageIds;
 }
 </script>
 
@@ -69,7 +97,7 @@ const onCommit = () => {
           </van-cell-group>
         </div>
         <div class="position">
-          <geo-location-filed :location="location"/>
+          <geo-location-filed v-model:location="location"/>
         </div>
       </div>
       <!-- 农药化肥的添加记录表单 -->
