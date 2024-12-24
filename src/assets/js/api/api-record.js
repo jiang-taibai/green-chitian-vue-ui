@@ -16,6 +16,11 @@ export const userFields = () => {
 
 /**
  * 分页查询该用户地块施肥记录
+ * @param fieldId       地块 ID
+ * @param size          分页大小
+ * @param current       当前页
+ * @param startDate     开始日期
+ * @param endDate       结束日期
  */
 export const getFertilizations = ({fieldId, size, current, startDate, endDate}) => {
     return api.get('/fertilizer/get/fertilizations', {
@@ -34,4 +39,12 @@ export const getFertilizations = ({fieldId, size, current, startDate, endDate}) 
  */
 export const getAllFertilizations = () => {
     return api.get('/fertilizer/types/all', {})
+}
+
+/**
+ * 上传施肥记录
+ * @param fertilizationRecordDto {FertilizationRecordDto} 施肥记录 DTO
+ */
+export const uploadFertilization = (fertilizationRecordDto) => {
+    return api.post('/fertilizer/upload/fertilization', fertilizationRecordDto);
 }
