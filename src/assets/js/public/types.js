@@ -90,3 +90,30 @@
  * @property {Number} mu                   面积_亩
  * @property {Number} mj                   MJ字段
  */
+
+/**
+ * @typedef  {Object} FertilizationRecordDto  施肥记录 DTO
+ * @property {Number} id                    记录 ID（新增时不需要）
+ * @property {Number} fieldBlockId          地块 ID
+ * @property {String} applicationDate       施肥日期（2024-12-20）
+ * @property {String} cropType              作物类型
+ * @property {String} method                施肥方法
+ * @property {String} weatherConditions     天气状况
+ * @property {String} soilMoisture          土壤湿度
+ * @property {String} notes                 备注信息
+ * @property {Array.<String>} imageIds      图片 ID 数组
+ * @property {String} location              位置
+ * @property {Array.<FertilizerCardDto>} fertilizerCards  施肥卡片
+ * @property {String} createTime            记录创建时间
+ * @property {String} updateTime            记录更新时间
+ */
+
+/**
+ * @typedef {Object} FertilizerCardDto  施肥卡片
+ * @property {Number} id                卡片 ID（新增时不需要）
+ * @property {String} uint              用量单位
+ * @property {Number} fertilizerTypeId  肥料类型 ID
+ * @property {String} fertilizerName    肥料名称
+ * @property {Number} recordId          施肥记录 ID（新增时不需要）
+ * @property {Number} applicationUsed   施肥用量
+ */
