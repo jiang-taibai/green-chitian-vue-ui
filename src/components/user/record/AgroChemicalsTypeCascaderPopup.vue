@@ -32,10 +32,6 @@ watch(() => localValue.value, (newValue) => {
 
 const show = ref(false);
 const options = ref([])
-const otherOption = {
-  text: '其他',
-  value: -1,
-}
 
 const onFinish = ({selectedOptions}) => {
   localValue.value.id = selectedOptions[selectedOptions.length - 1].value;
@@ -84,7 +80,6 @@ const generateOptions = (fertilizations) => {
           value: fertilizer.id,
         });
       });
-      fertilization.children.push(otherOption);
       fertilizationList.push(fertilization);
     } else {
       fertilizationList.push({
@@ -94,7 +89,6 @@ const generateOptions = (fertilizations) => {
       });
     }
   });
-  fertilizationList.push(otherOption);
   return fertilizationList;
 }
 </script>
@@ -103,8 +97,8 @@ const generateOptions = (fertilizations) => {
   <div>
     <van-field v-model="localValue.name" is-link readonly :required="props.required"
                label="农药/化肥" placeholder="请选择农药/化肥" @click="show = true"/>
-    <van-field v-show="localValue.id===-1" v-model="localValue.name" required
-               label="其他产品" placeholder="请输入其他农药/化肥"/>
+    <van-field v-model="localValue.name" required
+               label="具体名称" placeholder="请输入具体名称"/>
     <van-popup v-model:show="show" round position="bottom">
       <van-cascader title="请选择所在农药/化肥" :options="options"
                     @close="show = false" @finish="onFinish"/>
