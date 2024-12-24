@@ -2,9 +2,8 @@
 import {computed, defineProps, ref, watch} from "vue";
 import RecordCard from "@/components/user/record/RecordCard.vue";
 import {getFertilizations} from "@/assets/js/api/api-record.js";
-import {isSuccessPageResponse} from "@/assets/js/api/response-utils.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {getImage} from "@/assets/js/api/api-file.js";
-import {validate} from "uuid";
 import validator from "@/assets/js/public/validator.js";
 
 /* ============== 参数 ============== */
@@ -50,17 +49,18 @@ const queryRecords = () => {
     current: pagination.value.current + 1,
     startDate: props.filterData.dateStart,
     endDate: props.filterData.dateEnd,
-  }).then(/** @param res {Page<FertilizationRecord>} */(res) => {
-    if (!isSuccessPageResponse(res)) {
+  }).then(/** @param res {Result<Page<FertilizationRecord>>} */(res) => {
+    if (!isSuccessResponse(res)) {
       return;
     }
+    const data = res.data;
     pagination.value = {
-      current: res.current,
-      size: res.size,
-      pages: res.pages,
-      total: res.total,
+      current: data.current,
+      size: data.size,
+      pages: data.pages,
+      total: data.total,
     }
-    for (let record of res.records) {
+    for (let record of data.records) {
       if (validator.isEmptyArray(record.imageIds)) {
         covers.value[record.id] = void 0;
         continue;
@@ -81,7 +81,7 @@ const queryRecords = () => {
         }
       });
     }
-    records.value.push(...res.records);
+    records.value.push(...data.records);
   }).finally(() => {
     loading.value = false;
   });
