@@ -1,5 +1,6 @@
 <script setup>
 import {defineProps, defineEmits, onMounted, ref, watch} from 'vue';
+import {getAllFieldClass} from "@/assets/js/api/api-public.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 
 const props = defineProps({
@@ -42,24 +43,21 @@ const init = () => {
   initFieldClass();
 }
 const initFieldClass = () => {
-  // userFields().then(res => {
-  //   if (isSuccessResponse(res)) {
-  //     const farmlandList = [];
-  //     res.data.forEach(/** @param item {Field} */item => {
-  //       farmlandList.push({
-  //         text: `${item.committee}-${item.fieldClass} #${item.id}`,
-  //         value: item.id,
-  //         originalData: item,
-  //       });
-  //     });
-  //     options.value = farmlandList;
-  //   }
-  // });
-  options.value = [
-    {text: "全部", value: void 0},
-    {text: "水田", value: 1},
-    {text: "稻田", value: 2},
-  ]
+  getAllFieldClass().then(res => {
+    if (isSuccessResponse(res)) {
+      const fieldClassList = [{
+        text: '全部',
+        value: void 0,
+      }];
+      res.data.forEach(/** @param item {String} */item => {
+        fieldClassList.push({
+          text: item,
+          value: item,
+        });
+      });
+      options.value = fieldClassList;
+    }
+  });
 }
 </script>
 

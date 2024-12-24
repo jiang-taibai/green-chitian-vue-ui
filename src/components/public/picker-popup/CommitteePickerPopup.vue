@@ -1,5 +1,6 @@
 <script setup>
 import {defineProps, defineEmits, onMounted, ref, watch} from 'vue';
+import {getAllCommittee} from "@/assets/js/api/api-public.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 
 const props = defineProps({
@@ -42,27 +43,21 @@ const init = () => {
   initCommittee();
 }
 const initCommittee = () => {
-  // userFields().then(res => {
-  //   if (isSuccessResponse(res)) {
-  //     const farmlandList = [];
-  //     res.data.forEach(/** @param item {Field} */item => {
-  //       farmlandList.push({
-  //         text: `${item.committee}-${item.fieldClass} #${item.id}`,
-  //         value: item.id,
-  //         originalData: item,
-  //       });
-  //     });
-  //     options.value = farmlandList;
-  //   }
-  // });
-  options.value = [
-    {text: "全部", value: void 0},
-    {text: "委员会1", value: 1},
-    {text: "委员会2", value: 2},
-    {text: "委员会3", value: 3},
-    {text: "委员会4", value: 4},
-    {text: "委员会5", value: 5},
-  ]
+  getAllCommittee().then(res => {
+    if (isSuccessResponse(res)) {
+      const committeeList = [{
+        text: '全部',
+        value: void 0,
+      }];
+      res.data.forEach(/** @param item {String} */item => {
+        committeeList.push({
+          text: item,
+          value: item,
+        });
+      });
+      options.value = committeeList;
+    }
+  });
 }
 </script>
 
