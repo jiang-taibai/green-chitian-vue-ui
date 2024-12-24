@@ -71,3 +71,22 @@
  * @property {String} createTime       创建时间
  * @property {String} updateTime       更新时间
  */
+
+/**
+ * @typedef {Object} UserFieldDetailUnion  用户田地详细信息
+ * @property {Number} userFieldId          用户田地 ID
+ * @property {Number} userId               用户 ID
+ * @property {Number} fieldId              田地 ID
+ * @property {Number} ctTn                 总氮含量
+ * @property {Number} ctTp                 全磷含量
+ * @property {Number} ctAk                 速效钾含量
+ * @property {Number} ctOm                 有机质含量
+ * @property {Number} ctHn                 碱解氮
+ * @property {Number} ctAp                 有效磷
+ * @property {Number} ctTk                 全钾含量
+ * @property {Number} ctPh                 土地PH值
+ * @property {String} fieldClass           田地分类
+ * @property {String} committee            村委会
+ * @property {Number} mu                   面积_亩
+ * @property {Number} mj                   MJ字段
+ */
