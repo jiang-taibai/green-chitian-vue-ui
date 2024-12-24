@@ -14,8 +14,7 @@ export const getLocationText = (latitude, longitude) => {
         lat: latitude,
         ver: 1
     }
-    return apiTianditu.get({
-        url: '/geocoder',
+    return apiTianditu.get('/geocoder', {
         params: {
             postStr: JSON.stringify(postStr),
             type: 'geocode',

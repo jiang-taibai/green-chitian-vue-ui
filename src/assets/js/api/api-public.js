@@ -18,5 +18,5 @@ export const getAllCommittee = () => {
  * 查询所有的地块类型
  */
 export const getAllFieldClass = () => {
-    return api.get('/field/block/fertilizer/get/fieldclass/all', {});
+    return api.get('/field/block/fertilizer/get/fieldclass/all');
 }

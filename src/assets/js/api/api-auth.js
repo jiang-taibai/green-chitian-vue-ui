@@ -38,10 +38,5 @@ export const login = ({username, password}) => {
     if (result.error) {
         return Promise.reject(result.error);
     }
-    return api.post('/user/login', {
-        data: {
-            username,
-            password
-        }
-    });
+    return api.post('/user/login', {username, password});
 }

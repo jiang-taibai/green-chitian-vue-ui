@@ -7,8 +7,13 @@ const api = createAxiosInstance({
     useToken: true,
 });
 
+/**
+ * 通过多条件查询（田地类型、委员会）查询所有地块的土壤养分信息
+ * @param fieldClass    田地类型
+ * @param committee     委员会
+ */
 export const queryFieldBlockFertilizerByMultiCondition = ({fieldClass, committee}) => {
-    return api.get('/field/block/fertilizer/user/page', {
+    return api.get('/field/block/fertilizer/user/list', {
         params: {
             fieldClass, committee
         }
