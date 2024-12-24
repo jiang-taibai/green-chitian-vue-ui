@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed, defineProps, defineEmits, watch} from 'vue'
+import {ref, computed, defineProps, defineEmits, watch, onMounted} from 'vue'
 import {v4 as uuidv4} from 'uuid'
 import validator from "@/assets/js/public/validator.js";
 import AgroChemicalsTypeCascaderPopup from "@/components/user/record/AgroChemicalsTypeCascaderPopup.vue";
@@ -16,11 +16,11 @@ const emit = defineEmits(['update:modelValue'])
 /* =============== 父子组件传值拷贝 ================== */
 const localValue = ref([...props.modelValue]);
 watch(() => props.modelValue, (newValue) => {
-  localValue.value = [...newValue];
+  localValue.value = newValue;
 });
 watch(() => localValue.value, (newValue) => {
   emit('update:modelValue', newValue);
-});
+}, {deep: true});
 
 const activeAgroChemicalsItem = ref([])
 
@@ -33,9 +33,10 @@ const dosageUnitChooseForm = {
    * 选择的农化产品的用量单位
    */
   options: [
+    {text: "吨", value: "t"},
     {text: "千克", value: "kg"},
     {text: "克", value: "g"},
-    {text: "斤", value: "jin"},
+    {text: "毫克", value: "mg"},
     {text: "升", value: "l"},
     {text: "毫升", value: "ml"},
   ]
@@ -71,6 +72,12 @@ const collapseItemTitles = computed(() => {
     return `${agroChemicals} ${agroChemicalsInfo.dosageNumber} ${agroChemicalsInfo.dosageUnitText}`
   })
 })
+
+onMounted(() => {
+  if (localValue.value.length === 0) {
+    addAgroChemicalsItem()
+  }
+})
 </script>
 
 <template>
@@ -99,9 +106,8 @@ const collapseItemTitles = computed(() => {
       </van-button>
     </van-collapse>
     <van-popup v-model:show="showDosageUnitPopup" round position="bottom">
-      <van-picker :columns="dosageUnitChooseForm  .options"
+      <van-picker :columns="dosageUnitChooseForm.options"
                   @cancel="dosageUnitChooseForm.show = false" @confirm="onDosageUnitChooseFinish"/>
-
     </van-popup>
   </div>
 </template>
