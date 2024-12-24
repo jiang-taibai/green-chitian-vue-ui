@@ -2,6 +2,7 @@
 import {defineProps, defineEmits, onMounted, ref, watch, computed} from 'vue';
 import {userFields} from "@/assets/js/api/api-record.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {convertFieldName} from "@/assets/js/public/convert.js";
 
 const props = defineProps({
   show: {
@@ -19,6 +20,12 @@ const props = defineProps({
   presetOptions: {
     type: Array,
     default: () => [],
+    validator(value, props) {
+      if (props.init) {
+        return true;
+      }
+      return value.every(item => item.text && item.value);
+    }
   }
 })
 const emit = defineEmits(['update:show', 'confirm']);
@@ -73,7 +80,7 @@ const initFarmlands = () => {
       }];
       res.data.forEach(/** @param item {Field} */item => {
         farmlandList.push({
-          text: `${item.committee}-${item.fieldClass} #${item.id}`,
+          text: convertFieldName(item.committee, item.fieldClass, item.id),
           value: item.id,
           originalData: item,
         });
