@@ -16,3 +16,19 @@ export const getImage = (id) => {
         responseType: 'blob'
     });
 }
+
+/**
+ * 上传照片
+ * @param image {File}          照片
+ * @param isCompress {Boolean}  是否压缩
+ */
+export const uploadImage = (image, isCompress = true) => {
+    const formData = new FormData();
+    formData.append("image", image)
+    formData.append("isCompress", isCompress)
+    return api.post('/images/fileupload', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
