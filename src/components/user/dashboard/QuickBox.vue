@@ -4,8 +4,8 @@ import agriculture from '@/assets/img/icon/agriculture.png'
 import upload from '@/assets/img/icon/upload.png'
 
 const quickList = [
-  {iconName: agriculture, text: '百科指南', routerName: 'UserEncyclopedia', jumpMode: 'replace'},
   {iconName: upload, text: '快速上传', routerName: 'RecordUpload', jumpMode: 'push'},
+  {iconName: agriculture, text: '百科指南', routerName: 'UserEncyclopedia', jumpMode: 'replace'},
 ]
 
 const router = useRouter()
