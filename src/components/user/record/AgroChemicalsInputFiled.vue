@@ -54,7 +54,10 @@ const onDosageUnitChooseFinish = ({selectedOptions}) => {
 
 const addAgroChemicalsItem = () => {
   localValue.value.push({
-    agroChemicals: {},
+    agroChemicals: {
+      id: void 0,
+      name: void 0
+    },
     dosageNumber: 0.0,
     dosageUnitText: '千克',
     dosageUnitValue: 'kg',
