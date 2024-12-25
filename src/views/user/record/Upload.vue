@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue';
+import {ref, toValue} from 'vue';
 import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import NavBar from "@/components/public/NavBar.vue";
 import AgroChemicalsInputFiled from "@/components/user/record/AgroChemicalsInputFiled.vue";
@@ -7,6 +7,9 @@ import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/Farm
 import {convertDateToYYYYMMDD} from "@/assets/js/public/convert.js";
 import {uploadImage} from "@/assets/js/api/api-file.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import validator from "@/assets/js/public/validator.js";
+import {showFailToast, showSuccessToast} from "@/assets/js/plugins/vant-toast.js";
+import {onUploadRecord} from "@/components/user/record/workflow-upload.js";
 
 /* =============== 数据 ================== */
 const farmlandChooseForm = ref({
@@ -37,47 +40,22 @@ const onFarmlandChooseFinish = ({selectedOptions}) => {
  * 提交表单
  */
 const onCommit = async () => {
-  /**
-   * 农药化肥记录的 DTO
-   * @type {import('@/assets/js/public/types').FertilizationRecordDto}
-   */
-  const fertilizationRecordDto = initFertilizationRecordDto();
-  const imageIds = await uploadImages();
-}
-
-/**
- * 初始化农药化肥记录的 DTO
- */
-const initFertilizationRecordDto = () => {
-  /**
-   * 农药化肥记录的 DTO
-   * @type {import('@/assets/js/public/types').FertilizationRecordDto}
-   */
-  const fertilizationRecordDto = {}
-  fertilizationRecordDto.fieldBlockId = farmlandChooseForm.value.value;
-  fertilizationRecordDto.applicationDate = convertDateToYYYYMMDD(new Date());
-  fertilizationRecordDto.notes = note.value;
-  fertilizationRecordDto.imageIds = [];
-  fertilizationRecordDto.location = location.value.text;
-  fertilizationRecordDto.fertilizerCards = [];
-  return fertilizationRecordDto;
-}
-
-/**
- * 上传图片
- */
-const uploadImages = async () => {
-  const imageIds = [];
-  for (let i = 0; i < fileList.value.length; i++) {
-    const file = fileList.value[i].file;
-    const res = await uploadImage(file);
+  onUploadRecord({
+    farmlandChooseForm: toValue(farmlandChooseForm),
+    agroChemicalInfos: toValue(agroChemicalInfos),
+    note: toValue(note),
+    fileList: toValue(fileList),
+  }).then(/** @param res {Result} */res => {
     if (isSuccessResponse(res)) {
-      imageIds.push(res.data);
+      const id = res.data.id
+      showSuccessToast("上传成功");
+      // TODO: 跳转到记录详情页
     } else {
-      console.error(res.message);
+      showFailToast(res.message);
     }
-  }
-  return imageIds;
+  }).catch((err) => {
+    showFailToast(err.message);
+  });
 }
 </script>
 
@@ -115,7 +93,8 @@ const uploadImages = async () => {
         <van-button type="primary" @click="onCommit" block round size="small">上传</van-button>
       </div>
       <!-- 挑选农地的 Picker 弹窗 -->
-      <farmland-choose-form-picker-popup v-model:show="farmlandChooseForm.show" @confirm="onFarmlandChooseFinish"/>
+      <farmland-choose-form-picker-popup v-model:show="farmlandChooseForm.show" :init-with-all="false"
+                                         @confirm="onFarmlandChooseFinish"/>
     </div>
   </div>
 </template>
