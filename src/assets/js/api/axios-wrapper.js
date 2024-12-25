@@ -7,6 +7,7 @@ import router from "@/assets/js/router/index.js";
  * @param baseURL       基础请求地址
  * @param timeout       请求超时时间，默认 5000 毫秒
  * @param useToken      是否使用 token，默认使用；如果使用，则会使用 Pinia 的 useUserStore 获取 token
+ * @returns {AxiosInstance}
  */
 function createAxiosInstance(
     {
