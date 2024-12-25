@@ -105,8 +105,8 @@ const onFilter = () => {
     if (isSuccessResponse(res)) {
       const data = res.data
       farmlandOptions.value = []
-      if (data.records.length > 0) {
-        data.records.forEach(/** @param item {UserFieldDetailUnion} */item => {
+      if (data.length > 0) {
+        data.forEach(/** @param item {UserFieldDetailUnion} */item => {
           farmlandOptions.value.push({
             text: convertFieldName(item.committee, item.fieldClass, item.fieldId),
             value: item.fieldId,
