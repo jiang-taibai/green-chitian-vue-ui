@@ -5,6 +5,7 @@ import {getFertilizations} from "@/assets/js/api/api-record.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {getImage} from "@/assets/js/api/api-file.js";
 import validator from "@/assets/js/public/validator.js";
+import {showFailToast} from "@/assets/js/plugins/vant-toast.js";
 
 /* ============== 参数 ============== */
 const props = defineProps({
@@ -49,41 +50,49 @@ const queryRecords = () => {
     current: pagination.value.current + 1,
     startDate: props.filterData.dateStart,
     endDate: props.filterData.dateEnd,
-  }).then(/** @param res {Result<Page<FertilizationRecord>>} */(res) => {
-    if (!isSuccessResponse(res)) {
-      return;
-    }
-    const data = res.data;
-    pagination.value = {
-      current: data.current,
-      pages: data.pages,
-      total: data.total,
-    }
-    for (let record of data.records) {
-      if (validator.isEmptyArray(record.imageIds)) {
-        covers.value[record.id] = void 0;
-        continue;
-      }
-      // 如果已经获取过封面图片，则跳过
-      // 出现场景：比如说查询多次，可能会重复获取图片
-      if (covers.value[record.id]) {
-        continue;
-      }
-      const imageId = record.imageIds[0]
-      getImage(imageId).then((res) => {
-        try {
-          covers.value[record.id] = URL.createObjectURL(res);
-        } catch (e) {
-          covers.value[record.id] = void 0;
-          console.error("获取图片失败：", e);
-          console.error("图片ID：", imageId);
+  })
+      .then(/** @param res {Result<Page<FertilizationRecord>>} */(res) => {
+        if (!isSuccessResponse(res)) {
+          return;
         }
+        const data = res.data;
+        pagination.value = {
+          current: data.current,
+          pages: data.pages,
+          total: data.total,
+        }
+        for (let record of data.records) {
+          if (validator.isEmptyArray(record.imageIds)) {
+            covers.value[record.id] = void 0;
+            continue;
+          }
+          // 如果已经获取过封面图片，则跳过
+          // 出现场景：比如说查询多次，可能会重复获取图片
+          if (covers.value[record.id]) {
+            continue;
+          }
+          const imageId = record.imageIds[0]
+          getImage(imageId).then((res) => {
+            try {
+              covers.value[record.id] = URL.createObjectURL(res);
+            } catch (e) {
+              covers.value[record.id] = void 0;
+              console.error("获取图片失败：", e);
+              console.error("图片ID：", imageId);
+            }
+          });
+        }
+        records.value.push(...data.records);
+      })
+      .catch((error) => {
+        console.error("查询记录失败：", error);
+        // 标记为已完成，避免重复请求
+        finished.value = true;
+        showFailToast("查询记录失败，请稍后重试");
+      })
+      .finally(() => {
+        loading.value = false;
       });
-    }
-    records.value.push(...data.records);
-  }).finally(() => {
-    loading.value = false;
-  });
 }
 
 /**
