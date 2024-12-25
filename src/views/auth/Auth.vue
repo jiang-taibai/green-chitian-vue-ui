@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from 'vue'
-import {showSuccessToast} from 'vant';
+import {showSuccessToast} from '@/assets/js/plugins/vant-toast.js';
 import LoginForm from "@/components/auth/LoginForm.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
 import ForgetForm from "@/components/auth/ForgetForm.vue";

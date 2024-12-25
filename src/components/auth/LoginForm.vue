@@ -2,7 +2,7 @@
 import {ref, defineEmits} from 'vue'
 import SmsField from "@/components/public/SMSField.vue";
 import {login} from "@/assets/js/api/api-auth.js";
-import {showFailToast} from 'vant';
+import {showFailToast} from '@/assets/js/plugins/vant-toast.js';
 import {useUserStore} from "@/assets/js/store/user-info.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 

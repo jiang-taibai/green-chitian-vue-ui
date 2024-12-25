@@ -1,6 +1,6 @@
 <script setup>
 import {ref, defineProps, defineEmits, watch, onMounted} from 'vue';
-import {showFailToast} from 'vant';
+import {showFailToast} from '@/assets/js/plugins/vant-toast.js';
 import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
 
 const props = defineProps({
