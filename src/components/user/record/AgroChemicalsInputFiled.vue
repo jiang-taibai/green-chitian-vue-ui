@@ -33,12 +33,12 @@ const dosageUnitChooseForm = {
    * 选择的农化产品的用量单位
    */
   options: [
-    {text: "吨", value: "t"},
-    {text: "千克", value: "kg"},
-    {text: "克", value: "g"},
-    {text: "毫克", value: "mg"},
-    {text: "升", value: "l"},
-    {text: "毫升", value: "ml"},
+    {text: "吨", value: "T"},
+    {text: "千克", value: "KG"},
+    {text: "克", value: "G"},
+    {text: "毫克", value: "MG"},
+    {text: "升", value: "L"},
+    {text: "毫升", value: "ML"},
   ]
 }
 const showDosageUnitPopup = ref(false);
@@ -60,7 +60,7 @@ const addAgroChemicalsItem = () => {
     },
     dosageNumber: 0.0,
     dosageUnitText: '千克',
-    dosageUnitValue: 'kg',
+    dosageUnitValue: 'KG',
     uuid: uuidv4()
   })
 }
