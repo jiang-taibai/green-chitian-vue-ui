@@ -97,7 +97,7 @@ const generateOptions = (fertilizations) => {
   <div>
     <van-field v-model="localValue.name" is-link readonly :required="props.required"
                label="农药/化肥" placeholder="请选择农药/化肥" @click="show = true"/>
-    <van-field v-model="localValue.name" required
+    <van-field v-show="localValue.id" v-model="localValue.name" required
                label="具体名称" placeholder="请输入具体名称"/>
     <van-popup v-model:show="show" round position="bottom">
       <van-cascader title="请选择所在农药/化肥" :options="options"
