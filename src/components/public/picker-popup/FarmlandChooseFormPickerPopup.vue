@@ -14,6 +14,13 @@ const props = defineProps({
     default: true,
   },
   /**
+   * 当 init 为 true 时，初始化时是否需要【全部】农田选项
+   */
+  initWithAll: {
+    type: Boolean,
+    default: true,
+  },
+  /**
    * 当 init 为 false 时，需要传入 presetOptions 作为预设选项
    * 预设选项可变，格式为 [{text: string, value: any}]
    */
@@ -73,11 +80,14 @@ const init = () => {
 const initFarmlands = () => {
   userFields().then(res => {
     if (isSuccessResponse(res)) {
-      const farmlandList = [{
-        text: '全部',
-        value: void 0,
-        originalData: void 0,
-      }];
+      const farmlandList = [];
+      if (props.initWithAll) {
+        farmlandList.push({
+          text: '全部',
+          value: void 0,
+          originalData: void 0,
+        })
+      }
       res.data.forEach(/** @param item {Field} */item => {
         farmlandList.push({
           text: convertFieldName(item.committee, item.fieldClass, item.id),
