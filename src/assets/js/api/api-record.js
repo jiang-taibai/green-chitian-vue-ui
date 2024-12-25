@@ -46,5 +46,5 @@ export const getAllFertilizations = () => {
  * @param fertilizationRecordDto {FertilizationRecordDto} 施肥记录 DTO
  */
 export const uploadFertilization = (fertilizationRecordDto) => {
-    return api.post('/fertilizer/upload/fertilization', fertilizationRecordDto);
+    return api.post('/fertilizer/add/fertilizations', fertilizationRecordDto);
 }
