@@ -94,7 +94,8 @@ onMounted(() => {
         </template>
         <agro-chemicals-type-cascader-popup v-model="agroChemicalsInfo.agroChemicals" required/>
         <van-field v-model="agroChemicalsInfo.dosageNumber" required
-                   type="number" label="用量" placeholder="请输入用量"/>
+                   type="number" :min="0"
+                   label="用量" placeholder="请输入用量"/>
         <van-field v-model="agroChemicalsInfo.dosageUnitText" is-link readonly required
                    label="用量单位" placeholder="请选择用量单位"
                    @click="displayDosageUnitChooseForm(index)"/>
@@ -110,7 +111,7 @@ onMounted(() => {
     </van-collapse>
     <van-popup v-model:show="showDosageUnitPopup" round position="bottom">
       <van-picker :columns="dosageUnitChooseForm.options"
-                  @cancel="dosageUnitChooseForm.show = false" @confirm="onDosageUnitChooseFinish"/>
+                  @cancel="showDosageUnitPopup = false" @confirm="onDosageUnitChooseFinish"/>
     </van-popup>
   </div>
 </template>
