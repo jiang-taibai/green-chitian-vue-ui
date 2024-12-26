@@ -4,14 +4,13 @@ import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import NavBar from "@/components/public/NavBar.vue";
 import AgroChemicalsInputFiled from "@/components/user/record/AgroChemicalsInputFiled.vue";
 import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
-import {convertDateToYYYYMMDD} from "@/assets/js/public/convert.js";
-import {uploadImage} from "@/assets/js/api/api-file.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
-import validator from "@/assets/js/public/validator.js";
 import {showFailToast, showSuccessToast} from "@/assets/js/plugins/vant-toast.js";
 import {onUploadRecord} from "@/components/user/record/workflow-upload.js";
+import {useRouter} from "vue-router";
 
 /* =============== 数据 ================== */
+const router = useRouter();
 const farmlandChooseForm = ref({
   show: false,
   text: void 0,
@@ -45,11 +44,12 @@ const onCommit = async () => {
     agroChemicalInfos: toValue(agroChemicalInfos),
     note: toValue(note),
     fileList: toValue(fileList),
+    location: toValue(location),
   }).then(/** @param res {Result} */res => {
     if (isSuccessResponse(res)) {
       const id = res.data.id
       showSuccessToast("上传成功");
-      // TODO: 跳转到记录详情页
+      router.push({name: 'RecordDetail', params: {id: id}});
     } else {
       showFailToast(res.message);
     }
