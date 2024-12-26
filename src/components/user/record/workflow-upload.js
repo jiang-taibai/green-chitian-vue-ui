@@ -1,5 +1,5 @@
 import validator from "@/assets/js/public/validator.js";
-import {convertDateToYYYYMMDD} from "@/assets/js/public/convert.js";
+import {convertDateToYYYYMMDD, convertLocationToArray} from "@/assets/js/public/convert.js";
 import {uploadImage} from "@/assets/js/api/api-file.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {uploadFertilization} from "@/assets/js/api/api-record.js";
@@ -8,14 +8,14 @@ import {uploadFertilization} from "@/assets/js/api/api-record.js";
  * 提交表单
  *
  */
-const onUploadRecord = async ({farmlandChooseForm, agroChemicalInfos, note, fileList}) => {
+const onUploadRecord = async ({farmlandChooseForm, agroChemicalInfos, note, fileList, location}) => {
     try {
         await checkCommit(farmlandChooseForm, agroChemicalInfos);
         /**
          * 农药化肥记录的 DTO
          * @type {import('@/assets/js/public/types').FertilizationRecordDto}
          */
-        const fertilizationRecordDto = initFertilizationRecordDto(farmlandChooseForm, note);
+        const fertilizationRecordDto = initFertilizationRecordDto(farmlandChooseForm, note, location);
         const imageIds = await uploadImages(fileList);
         /**
          * 农药化肥记录的 DTO
@@ -60,7 +60,7 @@ const checkCommit = async (farmlandChooseForm, agroChemicalInfos) => {
 /**
  * 初始化农药化肥记录的 DTO
  */
-const initFertilizationRecordDto = (farmlandChooseForm, note) => {
+const initFertilizationRecordDto = (farmlandChooseForm, note, location) => {
     /**
      * 农药化肥记录的 DTO
      * @type {import('@/assets/js/public/types').FertilizationRecordDto}
@@ -70,7 +70,7 @@ const initFertilizationRecordDto = (farmlandChooseForm, note) => {
     fertilizationRecordDto.applicationDate = convertDateToYYYYMMDD(new Date());
     fertilizationRecordDto.notes = note;
     fertilizationRecordDto.imageIds = [];
-    fertilizationRecordDto.location = location.text;
+    fertilizationRecordDto.location = convertLocationToArray(location);
     fertilizationRecordDto.fertilizerCards = [];
     return fertilizationRecordDto;
 }
@@ -99,8 +99,7 @@ const uploadImages = async (fileList) => {
 const initFertilizerCards = (agroChemicalInfos) => {
     return agroChemicalInfos.map(item => {
         return {
-            // TODO: 待后端修改为 unit
-            uint: item.dosageUnitValue,
+            unit: item.dosageUnitValue,
             fertilizerTypeId: item.agroChemicals.id,
             fertilizerName: item.agroChemicals.name,
             applicationUsed: item.dosageNumber,
