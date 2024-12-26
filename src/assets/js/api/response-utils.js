@@ -36,3 +36,15 @@ export const isSuccessPageResponse = (res) => {
         typeof res.total === 'number'
     );
 }
+
+/**
+ * 判断天地图请求是否成功
+ * @param res {TianDiTuResponse}    天地图请求结果
+ */
+export const isSuccessTianDiTuResponse = (res) => {
+    return (
+        basicValid(res) &&
+        typeof res === 'object' &&
+        res?.status === "0"
+    );
+}
