@@ -111,7 +111,7 @@
 /**
  * @typedef {Object} FertilizerCardDto  施肥卡片
  * @property {Number} id                卡片 ID（新增时不需要）
- * @property {String} uint              用量单位
+ * @property {String} unit              用量单位
  * @property {Number} fertilizerTypeId  肥料类型 ID
  * @property {String} fertilizerName    肥料名称
  * @property {Number} recordId          施肥记录 ID（新增时不需要）
