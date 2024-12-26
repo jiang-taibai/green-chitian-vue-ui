@@ -11,19 +11,23 @@
 
 # 技术选型
 
-- 前端
-    - 运行环境：[Node.js](https://nodejs.org/zh-cn/) 18.16.0
-    - 包管理工具：[npm](https://www.npmjs.com/)
-    - 框架：[Vue.js](https://v3.cn.vuejs.org/)
-    - 构建工具：[Vite](https://vitejs.dev/)
-    - UI框架
-        - 主UI框架：[Vant 4](https://vant-ui.github.io/vant/#/zh-CN)
-        - 可视化图表：[Echarts](https://echarts.apache.org/zh/index.html)
-        - 地图：[vue-tmap](https://didi.github.io/vue-tmap/)
-    - 路由：[Vue Router](https://next.router.vuejs.org/)
-    - 网络请求：[Axios](https://axios-http.com/)
+- 基础环境：
+  - 运行环境：[Node.js](https://nodejs.org/zh-cn/) 18.16.0
+  - 包管理工具：[npm](https://www.npmjs.com/) 9.5.1
+  - 框架：[Vue.js](https://v3.cn.vuejs.org/)
+  - 构建工具：[Vite](https://vitejs.dev/)
+- UI框架
+    - 主UI框架：[Vant 4](https://vant-ui.github.io/vant/#/zh-CN)
+    - 可视化图表：[Echarts](https://echarts.apache.org/zh/index.html)
+- 路由：[Vue Router](https://next.router.vuejs.org/)
+- 网络请求：[Axios](https://axios-http.com/)
+- 状态管理：[Pinia](https://pinia.vuejs.org/)
+- 地图：[vue-tmap](https://didi.github.io/vue-tmap/)
+- 工具库
     - 数据验证库：[Joi](https://joi.dev/)
-    - 状态管理：[Pinia](https://pinia.vuejs.org/)
+    - Lodash 工具库：[Lodash](https://lodash.com/)
+    - ID 生成器：[uuid](https://github.com/uuidjs/uuid)
+    - Markdown 渲染：[v-md-editor](https://code-farmer-i.github.io/vue-markdown-editor/zh/)
 
 # 代码提交规范
 
@@ -35,4 +39,6 @@
 * ci: CICD集成相关
 * test: 添加测试代码
 * refactor: 代码重构
-* build: 影响项目构建或依赖修改style:不影响程序逻辑的代码修改chore:不属于以上类型的其他类型(日常事务)
+* build: 影响项目构建或依赖修改
+* style: 不影响程序逻辑的代码修改
+* chore: 不属于以上类型的其他类型(日常事务)
