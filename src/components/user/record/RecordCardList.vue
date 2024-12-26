@@ -72,14 +72,11 @@ const queryRecords = () => {
             continue;
           }
           const imageId = record.imageIds[0]
-          getImage(imageId).then((res) => {
-            try {
-              covers.value[record.id] = URL.createObjectURL(res);
-            } catch (e) {
-              covers.value[record.id] = void 0;
-              console.error("获取图片失败：", e);
-              console.error("图片ID：", imageId);
-            }
+          getImage(imageId).then((url) => {
+            covers.value[record.id] = url;
+          }).catch((error) => {
+            console.error("获取封面图片失败：", error);
+            covers.value[record.id] = void 0;
           });
         }
         records.value.push(...data.records);
