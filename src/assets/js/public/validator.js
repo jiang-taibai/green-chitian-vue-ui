@@ -3,7 +3,7 @@
  * 如果是 undefined 或者 null 也会返回 true
  * 如果不是字符串，会打印警告信息，并返回 true
  * @param value         需要判断的值
- * @param trim          是否去掉前后空格
+ * @param trim          是否去掉前后空格，默认为 false
  * @returns {boolean}   返回是否为空
  */
 export const isEmptyString = (value, trim = false) => {
