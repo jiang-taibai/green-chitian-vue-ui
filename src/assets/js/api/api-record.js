@@ -48,3 +48,11 @@ export const getAllFertilizations = () => {
 export const uploadFertilization = (fertilizationRecordDto) => {
     return api.post('/fertilizer/add/fertilizations', fertilizationRecordDto);
 }
+
+/**
+ * 通过 ID 查询施肥记录
+ * @param id    施肥记录 ID
+ */
+export const getFertilizationRecordById = (id) => {
+    return api.get(`/fertilizer/get/fertilization/${id}`)
+}
