@@ -10,8 +10,8 @@
       </div>
       <div v-else>
         <div class="no-images">
-          <van-icon name="image-error" prefix="iconfont"/>
-          <p>无图片</p>
+          <van-icon name="image-error" class-prefix="iconfont"/>
+          <p>未上传图片</p>
         </div>
       </div>
     </div>
@@ -24,14 +24,22 @@
 </template>
 
 <script setup>
-import {ref, onMounted, defineProps} from 'vue';
+import {ref, onMounted, defineProps, watch} from 'vue';
 import {showImagePreview} from 'vant';
+import {getImage} from "@/assets/js/api/api-file.js";
 
 const props = defineProps({
-  images: {
+  imageIds: {
     type: Array,
     default: () => []
   }
+});
+
+// 图片列表
+const images = ref([])
+watch(() => props.imageIds, async (newVal) => {
+  await initImages(newVal);
+  checkShadows();
 });
 
 // 阴影显示状态
@@ -41,17 +49,16 @@ const showRightShadow = ref(false);
 // 获取 scroll container 的引用
 const scrollContainer = ref(null);
 
-onMounted(() => {
-  // 初始检测
-  checkShadows();
-});
-
-// 处理滚动事件
+/**
+ * 处理滚动事件
+ */
 function handleScroll() {
   checkShadows();
 }
 
-// 检查并更新阴影显示状态
+/**
+ * 检查并更新阴影显示状态
+ */
 function checkShadows() {
   const container = scrollContainer.value;
   if (!container) return;
@@ -62,13 +69,31 @@ function checkShadows() {
   showRightShadow.value = scrollLeft + clientWidth < scrollWidth - 1; // 减1避免浮点数误差
 }
 
-// 点击图片预览大图
+/**
+ * 点击图片预览大图
+ * @param index {number} 图片索引
+ */
 function previewImage(index) {
   showImagePreview({
-    images: props.images,
+    images: images.value,
     startPosition: index
   });
 }
+
+/**
+ * 初始化图片列表
+ * @param imageIds  图片 ID 列表
+ */
+const initImages = async (imageIds) => {
+  images.value = await Promise.all(imageIds.map(async id => {
+    try {
+      return await getImage(id);
+    } catch (e) {
+      console.error(e);
+      return void 0;
+    }
+  }));
+};
 </script>
 
 <style scoped>
