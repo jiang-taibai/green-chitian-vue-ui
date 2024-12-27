@@ -117,3 +117,11 @@
  * @property {Number} recordId          施肥记录 ID（新增时不需要）
  * @property {Number} applicationUsed   施肥用量
  */
+
+/**
+ * @typedef {Object} WXLoginResponseData  微信登陆响应
+ * @property {String} openid              微信 openid
+ * @property {String} sessionKey          微信 sessionKey
+ * @property {String} jwt                 JWT token
+ * @property {Boolean} needBind           是否需要绑定手机号
+ */
