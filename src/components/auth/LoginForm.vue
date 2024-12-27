@@ -5,6 +5,7 @@ import {login} from "@/assets/js/api/api-auth.js";
 import {showFailToast} from '@/assets/js/plugins/vant-toast.js';
 import {useUserStore} from "@/assets/js/store/user-info.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
 const userStore = useUserStore();
@@ -36,13 +37,21 @@ const onLogin = () => {
   }).then(res => {
     if (isSuccessResponse(res)) {
       userStore.setToken(res.data);
-      emits('login', {...formData.value});
+      emits('login');
     } else {
       showFailToast(res.message);
     }
   }).catch(err => {
     showFailToast(err.message);
   });
+}
+
+const onWechatLogin = () => {
+  if (WxMiniProgramUtils.isWeChatEnv()) {
+    WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
+  } else {
+    showFailToast('请在微信小程序中使用');
+  }
 }
 </script>
 
@@ -70,6 +79,7 @@ const onLogin = () => {
       </div>
       <div class="buttons">
         <van-button type="primary" round block @click="onLogin">登陆</van-button>
+        <van-button type="success" round block @click="onWechatLogin">微信快捷登录</van-button>
         <van-button type="default" round block @click="onChangeToRegister">前往注册</van-button>
       </div>
     </div>
