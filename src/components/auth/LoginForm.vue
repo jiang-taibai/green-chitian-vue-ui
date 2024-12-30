@@ -6,6 +6,7 @@ import {showFailToast} from '@/assets/js/plugins/vant-toast.js';
 import {useUserStore} from "@/assets/js/store/user-info.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
+import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
 const userStore = useUserStore();
@@ -26,11 +27,8 @@ const onChangeToForget = () => {
 const onChangeToRegister = () => {
   emits('change-to-register');
 }
-const onLogin = () => {
-  if (formData.value.authType === 'sms') {
-    showFailToast('暂不支持短信登录');
-    return;
-  }
+
+const onPasswordLogin = () => {
   login({
     username: formData.value.account,
     password: formData.value.password,
@@ -44,6 +42,20 @@ const onLogin = () => {
   }).catch(err => {
     showFailToast(err.message);
   });
+}
+
+const onSMSLogin = () => {
+  if (!SYSTEM_CONFIG.SMS_LOGIN_ENABLED) {
+    showFailToast('暂不支持短信登录');
+  }
+}
+
+const onLogin = () => {
+  if (formData.value.authType === 'sms') {
+    onSMSLogin();
+  } else {
+    onPasswordLogin();
+  }
 }
 
 const onWechatLogin = () => {

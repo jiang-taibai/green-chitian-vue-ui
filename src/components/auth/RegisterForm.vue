@@ -1,6 +1,8 @@
 <script setup>
 import {ref, defineEmits} from 'vue'
 import SmsField from "@/components/public/SMSField.vue";
+import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
+import {showFailToast} from "@/assets/js/plugins/vant-toast.js";
 
 const emits = defineEmits(['register', 'change-to-login'])
 
@@ -25,6 +27,10 @@ const onChangeToLogin = () => {
   emits('change-to-login');
 }
 const onRegister = () => {
+  if(!SYSTEM_CONFIG.REGISTRATION_ENABLED) {
+    showFailToast('注册功能未开启');
+    return;
+  }
   // 先简单的触发事件，后续再补充登录逻辑
   emits('register', {...formData.value});
 }
