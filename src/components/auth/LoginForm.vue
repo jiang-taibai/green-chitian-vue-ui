@@ -7,9 +7,12 @@ import {useUserStore} from "@/assets/js/store/user-info.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
 import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
+import {getAuthorizeURL} from "@/assets/js/api/api-weixin.js";
+import {useRouter} from "vue-router";
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
 const userStore = useUserStore();
+const router = useRouter();
 
 const formData = ref({
   authType: 'password',
@@ -60,7 +63,18 @@ const onLogin = () => {
 
 const onWechatLogin = () => {
   if (WxMiniProgramUtils.isWeChatEnv()) {
-    WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
+    // WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
+    const redirectUri = SYSTEM_CONFIG.WEBSITE_BASE_URL + router.resolve({name: 'Auth',}).fullPath
+    getAuthorizeURL({
+      redirectUri,
+      scope: 'snsapi_userinfo',
+      state: 'wxlogin'
+    }).then(url => {
+      alert(url)
+      window.location.href = url;
+    }).catch(err => {
+      showFailToast(err.message);
+    });
   } else {
     showFailToast('请在微信小程序中使用');
   }

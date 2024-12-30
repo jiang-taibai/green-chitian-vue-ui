@@ -9,7 +9,6 @@ import {wxLogin} from "@/assets/js/api/api-auth.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {useUserStore} from "@/assets/js/store/user-info.js";
 import {showFailToast} from "vant";
-import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -38,9 +37,9 @@ const getQueryParams = () => {
  */
 const tryLoginIfByWechat = () => {
   const parsedParams = getQueryParams();
-  const type = parsedParams.type;
+  const state = parsedParams.state;
   const code = parsedParams.code;
-  if (type !== 'wx-login') {
+  if (state !== 'wxlogin') {
     return
   }
   wxLogin(code).then(/** @param res {Result<WXLoginResponseData>} */res => {
@@ -48,14 +47,12 @@ const tryLoginIfByWechat = () => {
       userStore.setToken(res.data.jwt);
       userStore.setNeedBindPhone(res.data.needBind)
       showSuccessToast('登陆成功');
-      WxMiniProgramUtils.reLaunch({url: '/pages/index/index?type=normal-login&auth=success'})
+      router.push({name: 'UserDashboard'});
     } else {
       showFailToast(res.message);
-      WxMiniProgramUtils.reLaunch({url: '/pages/index/index?type=normal-login&auth=fail'})
     }
   }).catch(err => {
     showFailToast(err.message);
-    WxMiniProgramUtils.reLaunch({url: '/pages/index/index?type=normal-login&auth=fail'})
   });
 }
 
@@ -65,8 +62,8 @@ const tryLoginIfByWechat = () => {
  */
 const tryAutoLogin = () => {
   const parsedParams = getQueryParams();
-  const type = parsedParams.type;
-  if (type !== 'normal-login') {
+  const state = parsedParams.state;
+  if (state !== 'normal-login') {
     return
   }
   const autoLogin = parsedParams['auto-login'];
@@ -88,7 +85,7 @@ const tryAutoLogin = () => {
  * 3B. 小程序将 H5 带上参数 {type: 'normal-login', auto-login: true} 进入登录页面，此时执行自动登录 tryAutoLogin
  */
 onMounted(() => {
-  tryAutoLogin();
+  // tryAutoLogin();
   tryLoginIfByWechat();
 })
 </script>
