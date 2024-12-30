@@ -1,7 +1,7 @@
 <script setup>
 import {ref, defineProps, watch, computed, onMounted} from "vue";
 import pointImage from "@/assets/img/icon/point.png";
-import {tencentMapDeveloperKey} from "@/assets/js/secret";
+import {TENCENT_MAP_DEVELOPER_KEY} from "@/assets/js/secret";
 
 const props = defineProps({
   coordinate: {
@@ -55,7 +55,7 @@ onMounted(() => {
   <div>
     <div class="container">
       <tmap-map class="t-map"
-                :mapKey="tencentMapDeveloperKey" :baseMap="baseMap"
+                :mapKey="TENCENT_MAP_DEVELOPER_KEY" :baseMap="baseMap"
                 :center="center" :zoom="zoom" :doubleClickZoom="doubleClickZoom" :control="control">
         <tmap-multi-marker :styles="markerStyles" :geometries="markerGeometries"/>
       </tmap-map>

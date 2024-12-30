@@ -1,5 +1,5 @@
 import {createAxiosInstance} from "@/assets/js/api/axios-wrapper.js";
-import {tianDiTuToken} from "@/assets/js/secret/index.js";
+import {TIAN_DI_TU_TOKEN} from "@/assets/js/secret/index.js";
 
 // 别骂了，官网 天地图 英文翻译就是 tianditu
 const apiTianditu = createAxiosInstance({
@@ -48,7 +48,7 @@ export const getLocationText = (latitude, longitude) => {
         params: {
             postStr: JSON.stringify(postStr),
             type: 'geocode',
-            tk: tianDiTuToken,
+            tk: TIAN_DI_TU_TOKEN,
         }
     });
 }
@@ -77,7 +77,7 @@ export const getLocationByAddress = (address) => {
     return apiTianditu.get('/geocoder', {
         params: {
             ds: JSON.stringify(ds),
-            tk: tianDiTuToken,
+            tk: TIAN_DI_TU_TOKEN,
         }
     });
 }
