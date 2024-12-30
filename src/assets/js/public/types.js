@@ -73,10 +73,8 @@
  */
 
 /**
- * @typedef {Object} UserFieldDetailUnion  用户田地详细信息
- * @property {Number} userFieldId          用户田地 ID
- * @property {Number} userId               用户 ID
- * @property {Number} fieldId              田地 ID
+ * @typedef {Object} FieldBlockFertilizer  用户田地详细信息
+ * @property {Number} id                   田地 ID
  * @property {Number} ctTn                 总氮含量
  * @property {Number} ctTp                 全磷含量
  * @property {Number} ctAk                 速效钾含量
