@@ -13,7 +13,7 @@ import {merge} from 'lodash';
 const DEFAULT_FAIL_TOAST_OPTIONS = {
     type: 'fail',
     message: '操作失败',
-    duration: 5000,
+    duration: 4000,
 }
 
 /**
