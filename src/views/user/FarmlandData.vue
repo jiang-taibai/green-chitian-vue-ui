@@ -32,7 +32,7 @@ const filterData = ref({
 })
 /**
  * 就是使用 committee 和 fieldClass 两个字段查询出来的所有农地的数据
- * 格式为：[{text: {String}, value: {Number}, originalData: {UserFieldDetailUnion}}]
+ * 格式为：[{text: {String}, value: {Number}, originalData: {FieldBlockFertilizer}}]
  */
 const farmlandOptions = ref([])
 const soilNutrientKeys = [
@@ -106,10 +106,10 @@ const onFilter = () => {
       const data = res.data
       farmlandOptions.value = []
       if (data.length > 0) {
-        data.forEach(/** @param item {UserFieldDetailUnion} */item => {
+        data.forEach(/** @param item {FieldBlockFertilizer} */item => {
           farmlandOptions.value.push({
-            text: convertFieldName(item.committee, item.fieldClass, item.fieldId),
-            value: item.fieldId,
+            text: convertFieldName(item.committee, item.fieldClass, item.id),
+            value: item.id,
             originalData: item,
           })
         })
