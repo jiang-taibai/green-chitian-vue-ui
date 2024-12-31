@@ -47,10 +47,9 @@ const schema = Joi.object({
  * @returns {Promise<string>}
  */
 export const getAuthorizeURL = ({redirectUri, scope, state}) => {
-    const urlEncodedRedirectUri = encodeURIComponent(redirectUri);
     const params = {
         appid: WEI_XIN_DEVELOPER_ID,
-        redirect_uri: urlEncodedRedirectUri,
+        redirect_uri: redirectUri,
         response_type: 'code',
         scope: scope,
         state: state
