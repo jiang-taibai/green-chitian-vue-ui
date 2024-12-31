@@ -9,6 +9,7 @@ import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
 import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
 import {getAuthorizeURL} from "@/assets/js/api/api-weixin.js";
 import {useRouter} from "vue-router";
+import {resolveAbsoluteURL} from "@/assets/js/public/utils.js";
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
 const userStore = useUserStore();
@@ -64,13 +65,12 @@ const onLogin = () => {
 const onWechatLogin = () => {
   if (WxMiniProgramUtils.isWeChatEnv()) {
     // WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
-    const redirectUri = SYSTEM_CONFIG.WEBSITE_BASE_URL + router.resolve({name: 'Auth',}).fullPath
+    const redirectUri = resolveAbsoluteURL({name: 'Auth'})
     getAuthorizeURL({
       redirectUri,
       scope: 'snsapi_userinfo',
       state: 'wxlogin'
     }).then(url => {
-      alert(url)
       window.location.href = url;
     }).catch(err => {
       showFailToast(err.message);
