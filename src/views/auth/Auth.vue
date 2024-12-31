@@ -1,14 +1,11 @@
 <script setup>
 import {ref, onMounted} from 'vue'
-import {showSuccessToast} from '@/assets/js/plugins/vant-toast.js';
+import {showFailToast, showSuccessToast} from '@/assets/js/plugins/vant-toast.js';
 import LoginForm from "@/components/auth/LoginForm.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
 import ForgetForm from "@/components/auth/ForgetForm.vue";
 import {useRouter} from 'vue-router';
-import {wxLogin} from "@/assets/js/api/api-auth.js";
-import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {useUserStore} from "@/assets/js/store/user-info.js";
-import {showFailToast} from "vant";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -42,18 +39,19 @@ const tryLoginIfByWechat = () => {
   if (state !== 'wxlogin') {
     return
   }
-  wxLogin(code).then(/** @param res {Result<WXLoginResponseData>} */res => {
-    if (isSuccessResponse(res)) {
-      userStore.setToken(res.data.jwt);
-      userStore.setNeedBindPhone(res.data.needBind)
-      showSuccessToast('登陆成功');
-      router.push({name: 'UserDashboard'});
-    } else {
-      showFailToast(res.message);
-    }
-  }).catch(err => {
-    showFailToast(err.message);
-  });
+  showFailToast('微信登录正在调试中...')
+  // wxLogin(code).then(/** @param res {Result<WXLoginResponseData>} */res => {
+  //   if (isSuccessResponse(res)) {
+  //     userStore.setToken(res.data.jwt);
+  //     userStore.setNeedBindPhone(res.data.needBind)
+  //     showSuccessToast('登陆成功');
+  //     router.push({name: 'UserDashboard'});
+  //   } else {
+  //     showFailToast(res.message);
+  //   }
+  // }).catch(err => {
+  //   showFailToast(err.message);
+  // });
 }
 
 /**
