@@ -1,9 +1,13 @@
 <script setup>
 import {useRouter} from "vue-router";
 import NavBar from "@/components/public/NavBar.vue";
+import {useUserStore} from "@/assets/js/store/user-info.js";
 
 const router = useRouter();
+const userStore = useUserStore();
+
 const onLogOut = () => {
+  userStore.clearUser();
   router.push({name: 'Auth'});
 };
 </script>

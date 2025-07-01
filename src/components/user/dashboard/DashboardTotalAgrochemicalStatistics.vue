@@ -3,39 +3,27 @@ import {ref, onMounted, nextTick} from "vue";
 import * as echarts from 'echarts';
 
 const activatedTab = ref('monthly')
-
-import {getRandomIntNumber} from "@/assets/js/public/utils.js";
+import {
+  getFertilizerPesticideStatisticsFrequencyData,
+  getFertilizerPesticideStatisticsUsageData
+} from "@/assets/js/api/api-dashboard.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {showFailToast} from "@/assets/js/plugins/vant-toast.js";
 
 const monthlyChart = ref(null);
 const quarterlyChart = ref(null);
 const annualChart = ref(null);
+// 用于标记图表是否已经渲染
 const renderedCharts = {
   monthly: false,
   quarterly: false,
   annual: false,
 }
 
-const frequencyData = {};
-const dosageData = {}
-
-for (let year = 2022; year <= 2024; year++) {
-  for (let month = 1; month <= 12; month++) {
-    if (year === 2024 && month >= 10) break;
-    const randomFrequencyValue = getRandomIntNumber(10, 50);
-    const randomDosageValue = getRandomIntNumber(randomFrequencyValue * 10, randomFrequencyValue * 20);
-    const dateStr = `${year}-${month.toString().padStart(2, '0')}`;
-    frequencyData[dateStr] = {
-      year: year,
-      month: month,
-      value: randomFrequencyValue,
-    };
-    dosageData[dateStr] = {
-      year: year,
-      month: month,
-      value: randomDosageValue,
-    }
-  }
-}
+// 频次数据
+let frequencyData = {};
+// 用量数据
+let dosageData = {}
 
 const renderMonthlyChart = () => {
   if (renderedCharts.monthly) return;
@@ -176,12 +164,38 @@ const initChart = (chartDom, xAxisData, frequencySeriesData, dosageSeriesData) =
   eChartInstance.setOption(option);
 }
 
-onMounted(() => {
-  nextTick(() => {
-    renderMonthlyChart();
-  });
-})
+/**
+ * 获取数据
+ */
+const fetchData = async () => {
+  const frequencyDataResponse = await getFertilizerPesticideStatisticsUsageData()
+  if (isSuccessResponse(frequencyDataResponse)) {
+    frequencyData = frequencyDataResponse.data;
+  } else {
+    return Promise.reject(new Error(frequencyDataResponse.message));
+  }
+  const dosageDataResponse = await getFertilizerPesticideStatisticsFrequencyData()
+  if (isSuccessResponse(dosageDataResponse)) {
+    dosageData = dosageDataResponse.data;
+  } else {
+    return Promise.reject(new Error(dosageDataResponse.message));
+  }
+  return Promise.resolve();
+}
 
+onMounted(async () => {
+  await fetchData().catch((error) => {
+    showFailToast(error.message);
+  });
+  await nextTick(() => {
+    renderMonthlyChart();
+  })
+});
+
+/**
+ * 处理 Tab 切换
+ * @param name
+ */
 const handleTabChange = (name) => {
   nextTick(() => {
     switch (name) {

@@ -2,12 +2,18 @@
 import {ref, defineEmits} from 'vue'
 import SmsField from "@/components/public/SMSField.vue";
 import {login} from "@/assets/js/api/api-auth.js";
-import {showFailToast} from 'vant';
+import {showFailToast} from '@/assets/js/plugins/vant-toast.js';
 import {useUserStore} from "@/assets/js/store/user-info.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
+import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
+import {getAuthorizeURL} from "@/assets/js/api/api-weixin.js";
+import {useRouter} from "vue-router";
+import {resolveAbsoluteURL} from "@/assets/js/public/utils.js";
 
 const emits = defineEmits(['login', 'change-to-register', 'change-to-forget']);
 const userStore = useUserStore();
+const router = useRouter();
 
 const formData = ref({
   authType: 'password',
@@ -25,24 +31,53 @@ const onChangeToForget = () => {
 const onChangeToRegister = () => {
   emits('change-to-register');
 }
-const onLogin = () => {
-  if (formData.value.authType === 'sms') {
-    showFailToast('暂不支持短信登录');
-    return;
-  }
+
+const onPasswordLogin = () => {
   login({
     username: formData.value.account,
     password: formData.value.password,
   }).then(res => {
     if (isSuccessResponse(res)) {
       userStore.setToken(res.data);
-      emits('login', {...formData.value});
+      emits('login');
     } else {
       showFailToast(res.message);
     }
   }).catch(err => {
     showFailToast(err.message);
   });
+}
+
+const onSMSLogin = () => {
+  if (!SYSTEM_CONFIG.SMS_LOGIN_ENABLED) {
+    showFailToast('暂不支持短信登录');
+  }
+}
+
+const onLogin = () => {
+  if (formData.value.authType === 'sms') {
+    onSMSLogin();
+  } else {
+    onPasswordLogin();
+  }
+}
+
+const onWechatLogin = () => {
+  if (WxMiniProgramUtils.isWeChatEnv()) {
+    // WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
+    const redirectUri = resolveAbsoluteURL({name: 'Auth'})
+    getAuthorizeURL({
+      redirectUri,
+      scope: 'snsapi_userinfo',
+      state: 'wxlogin'
+    }).then(url => {
+      window.location.href = url;
+    }).catch(err => {
+      showFailToast(err.message);
+    });
+  } else {
+    showFailToast('请在微信小程序中使用');
+  }
 }
 </script>
 
@@ -70,6 +105,7 @@ const onLogin = () => {
       </div>
       <div class="buttons">
         <van-button type="primary" round block @click="onLogin">登陆</van-button>
+        <van-button type="success" round block @click="onWechatLogin">微信快捷登录</van-button>
         <van-button type="default" round block @click="onChangeToRegister">前往注册</van-button>
       </div>
     </div>

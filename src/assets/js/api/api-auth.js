@@ -38,10 +38,17 @@ export const login = ({username, password}) => {
     if (result.error) {
         return Promise.reject(result.error);
     }
-    return api.post('/user/login', {
-        data: {
-            username,
-            password
+    return api.post('/user/login', {username, password});
+}
+
+/**
+ * 使用微信 code 登陆
+ * @param code {String}  微信 code
+ */
+export const wxLogin = (code) => {
+    return api.post('/user/wxlogin', {}, {
+        params: {
+            code
         }
     });
 }

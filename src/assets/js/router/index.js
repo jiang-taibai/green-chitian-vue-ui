@@ -18,74 +18,78 @@ const ProfileIndex = () => import('@/views/user/profile/Index.vue')
 const ProfileModifyPassword = () => import('@/views/user/profile/ModifyPassword.vue')
 const ProfileModifyPhone = () => import('@/views/user/profile/ModifyPhone.vue')
 
-const authRoutes = [{
-    path: '/',
-    redirect: '/auth/auth'
-}, {
-    path: '/auth/auth',
-    name: 'Auth',
-    component: Auth
-}]
+const authRoutes = [
+    {
+        path: '/',
+        redirect: '/auth/auth'
+    }, {
+        path: '/auth/auth',
+        name: 'Auth',
+        component: Auth
+    }
+]
 
-const userRoutes = [{
-    path: '/user/dashboard',
-    name: 'UserDashboard',
-    component: Dashboard
-}, {
-    path: '/user/encyclopedia',
-    name: 'UserEncyclopedia',
-    component: Encyclopedia,
-    redirect: '/user/encyclopedia/index',
-    children: [{
-        path: 'index',
-        name: 'EncyclopediaIndex',
-        component: EncyclopediaIndex
-    }]
-}, {
-    path: '/user/record',
-    name: 'UserRecord',
-    component: Record,
-    redirect: '/user/record/index',
-    children: [{
-        path: 'index',
-        name: 'RecordIndex',
-        component: RecordIndex
+const userRoutes = [
+    {
+        path: '/user/dashboard',
+        name: 'UserDashboard',
+        component: Dashboard
     }, {
-        path: 'detail/:id',
-        name: 'RecordDetail',
-        component: RecordDetail
+        path: '/user/encyclopedia',
+        name: 'UserEncyclopedia',
+        component: Encyclopedia,
+        redirect: '/user/encyclopedia/index',
+        children: [{
+            path: 'index',
+            name: 'EncyclopediaIndex',
+            component: EncyclopediaIndex
+        }]
     }, {
-        path: 'upload',
-        name: 'RecordUpload',
-        component: RecordUpload
-    }]
-}, {
-    path: '/user/farmland-data',
-    name: 'UserFarmlandData',
-    component: Data
-}, {
-    path: '/user/profile',
-    name: 'UserProfile',
-    component: Profile,
-    redirect: '/user/profile/index',
-    children: [{
-        path: 'index',
-        name: 'ProfileIndex',
-        component: ProfileIndex
+        path: '/user/record',
+        name: 'UserRecord',
+        component: Record,
+        redirect: '/user/record/index',
+        children: [{
+            path: 'index',
+            name: 'RecordIndex',
+            component: RecordIndex
+        }, {
+            path: 'detail/:id',
+            name: 'RecordDetail',
+            component: RecordDetail
+        }, {
+            path: 'upload',
+            name: 'RecordUpload',
+            component: RecordUpload
+        }]
     }, {
-        path: 'modify-phone',
-        name: 'ProfileModifyPhone',
-        component: ProfileModifyPhone
+        path: '/user/farmland-data',
+        name: 'UserFarmlandData',
+        component: Data
     }, {
-        path: 'modify-password',
-        name: 'ProfileModifyPassword',
-        component: ProfileModifyPassword
-    }]
-}]
+        path: '/user/profile',
+        name: 'UserProfile',
+        component: Profile,
+        redirect: '/user/profile/index',
+        children: [{
+            path: 'index',
+            name: 'ProfileIndex',
+            component: ProfileIndex
+        }, {
+            path: 'modify-phone',
+            name: 'ProfileModifyPhone',
+            component: ProfileModifyPhone
+        }, {
+            path: 'modify-password',
+            name: 'ProfileModifyPassword',
+            component: ProfileModifyPassword
+        }]
+    }
+]
 
 const routes = [
     ...authRoutes,
-    ...userRoutes
+    ...userRoutes,
 ]
 
 const router = createRouter({

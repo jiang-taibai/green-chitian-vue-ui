@@ -1,6 +1,8 @@
 <script setup>
 
 import {ref, defineProps, defineEmits, watch} from "vue";
+import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
+import {showFailToast} from "@/assets/js/plugins/vant-toast.js";
 
 const props = defineProps({
   account: {
@@ -33,6 +35,10 @@ const sendingConfig = {
   intervalSeconds: 60,
 }
 const onSendSms = () => {
+  if (!SYSTEM_CONFIG.SMS_ENABLED) {
+    showFailToast('短信功能未开启');
+    return;
+  }
   sendingState.value.sent = true;
   sendingState.value.enable = false;
   sendingState.value.count = sendingConfig.intervalSeconds;

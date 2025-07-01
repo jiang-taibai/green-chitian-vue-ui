@@ -1,3 +1,6 @@
+import {SYSTEM_CONFIG} from "@/assets/js/public/system.js";
+import router from "@/assets/js/router/index.js";
+
 /**
  * 生成一个随机数，范围是 [min, max]
  * @param min   最小值
@@ -17,4 +20,14 @@ export const getRandomIntNumber = (min, max) => {
  */
 export const getRandomFloatNumber = (min, max) => {
     return Math.random() * (max - min) + min;
+}
+
+/**
+ * 根据 vue-router 的路由对象，生成一个绝对路径的 URL
+ * @param to    路由对象
+ * @param currentLocation   当前的路由对象
+ * @returns {string}    返回一个绝对路径的 URL
+ */
+export const resolveAbsoluteURL = (to, currentLocation) => {
+    return SYSTEM_CONFIG.WEBSITE_BASE_URL + router.resolve(to, currentLocation).href;
 }

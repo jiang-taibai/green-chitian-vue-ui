@@ -1,7 +1,7 @@
 <script setup>
 import {ref, defineProps, defineEmits, watch} from "vue";
 import GeoLocationGetterApi from "@/components/public/GeoLocationGetterApi.vue";
-import {tencentMapDeveloperKey} from "@/assets/js/secret/index.js";
+import {TENCENT_MAP_DEVELOPER_KEY} from "@/assets/js/secret/index.js";
 
 const props = defineProps({
   location: {
@@ -45,7 +45,7 @@ const onLocationFailed = (data) => {
       <van-text-ellipsis rows="1" class="location-text" :content="localLocation.text" position="start"/>
       <van-button type="primary" size="small" icon="location" @click="getLocation">定位</van-button>
     </div>
-    <geo-location-getter-api ref="geoLocationGetter" referer="绿色赤田" :api-key="tencentMapDeveloperKey"
+    <geo-location-getter-api ref="geoLocationGetter" referer="绿色赤田" :api-key="TENCENT_MAP_DEVELOPER_KEY"
                              @location-found="onLocationFound" @location-failed="onLocationFailed"/>
   </div>
 </template>

@@ -1,17 +1,92 @@
 <script setup>
-import {ref} from 'vue'
-import {showSuccessToast} from 'vant';
+import {ref, onMounted} from 'vue'
+import {showFailToast, showSuccessToast} from '@/assets/js/plugins/vant-toast.js';
 import LoginForm from "@/components/auth/LoginForm.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
 import ForgetForm from "@/components/auth/ForgetForm.vue";
 import {useRouter} from 'vue-router';
+import {useUserStore} from "@/assets/js/store/user-info.js";
+import {wxLogin} from "@/assets/js/api/api-auth.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 
 const router = useRouter();
+const userStore = useUserStore();
 const tab = ref('login');
-const onLogin = (data) => {
+const onLogin = () => {
   showSuccessToast('登陆成功');
   router.push({name: 'UserDashboard'});
 }
+
+// 获取当前 URL 的查询参数，排除 hash 部分
+const getQueryParams = () => {
+  // 使用 URLSearchParams 解析查询参数部分
+  const urlParams = new URLSearchParams(window.location.search);
+  // 创建一个对象来存储所有的查询参数
+  const params = {};
+  // 遍历 URL 参数并存入对象
+  urlParams.forEach((value, key) => {
+    params[key] = value;
+  });
+  return params;
+}
+
+/**
+ * 尝试使用微信登录
+ * 触发条件：
+ */
+const tryLoginIfByWechat = () => {
+  const parsedParams = getQueryParams();
+  const state = parsedParams.state;
+  const code = parsedParams.code;
+  if (state !== 'wxlogin') {
+    return
+  }
+  wxLogin(code).then(/** @param res {Result<WXLoginResponseData>} */res => {
+    if (isSuccessResponse(res)) {
+      userStore.setToken(res.data.jwt);
+      userStore.setNeedBindPhone(res.data.needBind)
+      showSuccessToast('登陆成功');
+      router.push({name: 'UserDashboard'});
+    } else {
+      showFailToast(res.message);
+    }
+  }).catch(err => {
+    showFailToast(err.message);
+  });
+}
+
+/**
+ * 尝试自动登录
+ * 触发条件：
+ */
+const tryAutoLogin = () => {
+  const parsedParams = getQueryParams();
+  const state = parsedParams.state;
+  if (state !== 'normal-login') {
+    return
+  }
+  const autoLogin = parsedParams['auto-login'];
+  if (autoLogin === 'true' && userStore.isAuthenticated) {
+    showSuccessToast('登陆成功');
+    router.push({name: 'UserDashboard'});
+  }
+}
+
+/**
+ * 注意：以下所述的【进入页面】，都会触发 onMounted 生命周期
+ * 1. 小程序首先不带参数进入登录页面，此时不执行任何操作
+ * 2. 小程序询问用户是否授权登录
+ * 2.1 用户点击确认后，小程序带上 {type: 'wx-login', code: *} 参数进入登录页面，此时执行微信登录 tryLoginIfByWechat
+ * 2.1.1 如果H5登录成功，则将小程序重定向到登录页，带上参数 {type: 'wx-login', auth: 'success'}，小程序将跳至第 3B 步
+ * 2.1.2 如果H5登录失败，则将小程序重定向到登录页，带上参数 {type: 'wx-login', auth: 'fail'}，小程序将跳至第 3A 步
+ * 2.2 用户点击取消后，跳至第 3A 步
+ * 3A. 小程序带上 {type: 'normal-login', auto-login: false} 参数进入登录页面，此时执行微信登录 tryAutoLogin
+ * 3B. 小程序将 H5 带上参数 {type: 'normal-login', auto-login: true} 进入登录页面，此时执行自动登录 tryAutoLogin
+ */
+onMounted(() => {
+  // tryAutoLogin();
+  tryLoginIfByWechat();
+})
 </script>
 
 <template>

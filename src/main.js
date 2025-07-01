@@ -2,7 +2,6 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import '@/assets/iconfont/iconfont.css'
 import './assets/css/style.css'
-import 'vant/lib/index.css';
 
 import router from './assets/js/router'
 import TMap from '@map-component/vue-tmap';

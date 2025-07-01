@@ -1,92 +1,101 @@
 <script setup>
-import {defineEmits, ref} from 'vue';
+import {ref, toValue} from 'vue';
 import GeoLocationFiled from "@/components/public/GeoLocationFiled.vue";
 import NavBar from "@/components/public/NavBar.vue";
 import AgroChemicalsInputFiled from "@/components/user/record/AgroChemicalsInputFiled.vue";
+import FarmlandChooseFormPickerPopup from "@/components/public/picker-popup/FarmlandChooseFormPickerPopup.vue";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {showFailToast, showSuccessToast} from "@/assets/js/plugins/vant-toast.js";
+import {onUploadRecord} from "@/components/user/record/workflow-upload.js";
+import {useRouter} from "vue-router";
 
-const emits = defineEmits(['commit']);
-
-const afterRead = (file) => {
-  console.log(file);
-};
-const detailInfo = ref({
-  id: '',
-  fileList: [],
-  farmland: "",
-  date: "",
-  agroChemicals: "",
-  dosageNumber: 0.00,
-  dosageUnitText: "克",
-  dosageUnitValue: "g",
-  note: "",
-  location: {
-    latitude: 0.00,
-    longitude: 0.00,
-  }
-});
-
+/* =============== 数据 ================== */
+const router = useRouter();
 const farmlandChooseForm = ref({
   show: false,
-  options: [
-    {text: "所有农田", value: "0"},
-    {text: "农田1", value: "1"},
-    {text: "农田2", value: "2"},
-    {text: "农田3", value: "3"},
-    {text: "农田4", value: "4"},
-    {text: "农田5", value: "5"},
-    {text: "农田6", value: "6"},
-    {text: "农田7", value: "7"},
-    {text: "农田8", value: "8"},
-    {text: "农田9", value: "9"},
-    {text: "农田10", value: "10"}
-  ]
+  text: void 0,
+  value: void 0,
 })
+const note = ref('')
+const location = ref({
+  text: "未知位置",
+  latitude: 0.00,
+  longitude: 0.00,
+})
+const agroChemicalInfos = ref([])
+const fileList = ref([])
 
-
+/* =============== 方法 ================== */
+/**
+ * 选择农田完成
+ * @param selectedOptions {PickerOption[]}  选择的农田
+ */
 const onFarmlandChooseFinish = ({selectedOptions}) => {
-  farmlandChooseForm.value.show = false;
-  detailInfo.value.farmland = selectedOptions[0].text;
+  farmlandChooseForm.value.text = selectedOptions[0].text;
+  farmlandChooseForm.value.value = selectedOptions[0].value;
 };
 
-
-const commit = (value) => {
-  emits('commit', {...value})
+/**
+ * 提交表单
+ */
+const onCommit = async () => {
+  onUploadRecord({
+    farmlandChooseForm: toValue(farmlandChooseForm),
+    agroChemicalInfos: toValue(agroChemicalInfos),
+    note: toValue(note),
+    fileList: toValue(fileList),
+    location: toValue(location),
+  }).then(/** @param res {Result} */res => {
+    if (isSuccessResponse(res)) {
+      const id = res.data.id
+      showSuccessToast("上传成功");
+      router.push({name: 'RecordDetail', params: {id: id}});
+    } else {
+      showFailToast(res.message);
+    }
+  }).catch((err) => {
+    showFailToast(err.message);
+  });
 }
 </script>
 
 <template>
-  <nav-bar title="记录 - 上传" back/>
-  <div class="container">
-    <div class="form">
-      <div class="detail">
-        <van-cell-group style="margin: 0;">
-          <van-field v-model="detailInfo.farmland" is-link readonly required
-                     label="农田" placeholder="请选择农田"
-                     @click="farmlandChooseForm.show = true"/>
-          <van-field v-model="detailInfo.note" autosize
-                     label="备注" placeholder="请输入备注" rows="1" type="textarea"/>
-        </van-cell-group>
+  <div>
+    <nav-bar title="记录 - 上传" back/>
+    <div class="container">
+      <!-- 基本信息表单：农田、备注、位置 -->
+      <div class="form">
+        <div class="detail">
+          <van-cell-group style="margin: 0;">
+            <van-field v-model="farmlandChooseForm.text" is-link readonly required
+                       label="农田" placeholder="请选择农田"
+                       @click="farmlandChooseForm.show = true"/>
+            <van-field v-model="note" autosize
+                       label="备注" placeholder="请输入备注" rows="1" type="textarea"/>
+          </van-cell-group>
+        </div>
+        <div class="position">
+          <geo-location-filed v-model:location="location"/>
+        </div>
       </div>
-      <div class="position">
-        <geo-location-filed :location="detailInfo.location"/>
+      <!-- 农药化肥的添加记录表单 -->
+      <van-cell-group title="农药/化肥记录" style="background: none;">
+        <agro-chemicals-input-filed v-model="agroChemicalInfos"/>
+      </van-cell-group>
+      <!-- 图片上传列表 -->
+      <van-cell-group title="图片上传" style="background: none;">
+        <div class="upload-container">
+          <van-uploader class="uploader" v-model="fileList" multiple preview-size="26vw"/>
+        </div>
+      </van-cell-group>
+      <!-- 上传按钮 -->
+      <div class="button">
+        <van-button type="primary" @click="onCommit" block round size="small">上传</van-button>
       </div>
+      <!-- 挑选农地的 Picker 弹窗 -->
+      <farmland-choose-form-picker-popup v-model:show="farmlandChooseForm.show" :init-with-all="false"
+                                         @confirm="onFarmlandChooseFinish"/>
     </div>
-    <van-cell-group title="农药/化肥记录" style="background: none;">
-      <agro-chemicals-input-filed/>
-    </van-cell-group>
-    <van-cell-group title="图片上传" style="background: none;">
-      <div class="upload-container">
-        <van-uploader class="uploader" v-model="detailInfo.fileList" multiple :after-read="afterRead"
-                      preview-size="26vw"/>
-      </div>
-    </van-cell-group>
-    <div class="button">
-      <van-button type="primary" @click="commit" block round size="small">上传</van-button>
-    </div>
-    <van-popup v-model:show="farmlandChooseForm.show" round position="bottom">
-      <van-picker :columns="farmlandChooseForm.options"
-                  @cancel="farmlandChooseForm.show = false" @confirm="onFarmlandChooseFinish"/>
-    </van-popup>
   </div>
 </template>
 

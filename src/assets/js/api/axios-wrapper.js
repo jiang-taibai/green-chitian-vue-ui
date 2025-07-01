@@ -1,11 +1,13 @@
 import axios from 'axios';
 import {useUserStore} from '@/assets/js/store/user-info';
+import router from "@/assets/js/router/index.js";
 
 /**
  * 创建 Axios 实例的工厂函数
  * @param baseURL       基础请求地址
  * @param timeout       请求超时时间，默认 5000 毫秒
  * @param useToken      是否使用 token，默认使用；如果使用，则会使用 Pinia 的 useUserStore 获取 token
+ * @returns {AxiosInstance}
  */
 function createAxiosInstance(
     {
@@ -55,6 +57,9 @@ function createAxiosInstance(
                     case 401:
                         console.error('未授权，请登录');
                         break;
+                    case 403:
+                        router.push({name: 'Auth'}).then(r => console.log(r));
+                        break;
                     case 404:
                         console.error('请求地址不存在');
                         break;
@@ -68,20 +73,7 @@ function createAxiosInstance(
         }
     );
 
-    return {
-        get(url, {params, data, responseType}) {
-            return instance.get(url, {params, data, responseType});
-        },
-        post(url, {params, data, responseType}) {
-            return instance.post(url, data, {params, responseType});
-        },
-        put(url, {params, data, responseType}) {
-            return instance.put(url, data, {params, responseType});
-        },
-        delete(url, {params, data, responseType}) {
-            return instance.delete(url, {params, data, responseType});
-        }
-    };
+    return instance;
 }
 
 export {

@@ -1,20 +1,14 @@
 <script setup>
 import {ref, onMounted, nextTick} from "vue";
 import * as echarts from 'echarts';
+import {
+  getFertilizerPesticideProportionPieChartData,
+} from "@/assets/js/api/api-dashboard.js";
+import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {showFailToast} from "@/assets/js/plugins/vant-toast.js";
 
 const chart = ref(null);
-const fertilizerPesticideData = [
-  {value: 1048.00, name: '尿素'},        // Urea
-  {value: 735.50, name: '磷肥'},        // Phosphate Fertilizer
-  {value: 580.25, name: '钾肥'},        // Potassium Fertilizer
-  {value: 484.75, name: '杀虫剂'},      // Insecticide
-  {value: 300.10, name: '除草剂'},      // Herbicide
-  {value: 250.55, name: '杀菌剂'},      // Fungicide
-  {value: 200.00, name: '有机肥'},      // Organic Fertilizer
-  {value: 150.30, name: '生长调节剂'},  // Growth Regulator
-  {value: 100.80, name: '微量元素肥料'},// Micronutrient Fertilizer
-  {value: 80.99, name: '缓释肥料'}      // Controlled-Release Fertilizer
-];
+let fertilizerPesticideData = [];
 
 const renderChart = (chartDom, data) => {
   const eChartInstance = echarts.init(chartDom);
@@ -36,8 +30,24 @@ const renderChart = (chartDom, data) => {
   eChartInstance.setOption(option);
 }
 
-onMounted(() => {
-  nextTick(() => {
+/**
+ * 获取数据
+ */
+const fetchData = async () => {
+  const fertilizerPesticideDataResponse = await getFertilizerPesticideProportionPieChartData()
+  if (isSuccessResponse(fertilizerPesticideDataResponse)) {
+    fertilizerPesticideData = fertilizerPesticideDataResponse.data;
+  } else {
+    return Promise.reject(new Error(fertilizerPesticideDataResponse.message));
+  }
+  return Promise.resolve()
+}
+
+onMounted(async () => {
+  await fetchData().catch((error) => {
+    showFailToast(error.message);
+  });
+  await nextTick(() => {
     renderChart(chart.value, fertilizerPesticideData);
   });
 });
