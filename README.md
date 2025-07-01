@@ -36,3 +36,12 @@
 * test: 添加测试代码
 * refactor: 代码重构
 * build: 影响项目构建或依赖修改style:不影响程序逻辑的代码修改chore:不属于以上类型的其他类型(日常事务)
+
+# 运行项目
+
+```bash
+git clone https://github.com/jiang-taibai/green-chitian-vue-ui
+cd green-chitian-vue-ui
+npm install
+npm run dev
+```
