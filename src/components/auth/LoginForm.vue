@@ -17,9 +17,9 @@ const router = useRouter();
 
 const formData = ref({
   authType: 'password',
-  account: 'admin',
+  account: '',
   sms: '',
-  password: 'admin'
+  password: ''
 })
 
 const onChangeAuthType = () => {
