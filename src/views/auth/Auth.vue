@@ -38,7 +38,7 @@ const tryLoginIfByWechat = () => {
   const parsedParams = getQueryParams();
   const state = parsedParams.state;
   const code = parsedParams.code;
-  if (state !== 'wxlogin') {
+  if (state !== 'wx-login') {
     return
   }
   wxLogin(code).then(/** @param res {Result<WXLoginResponseData>} */res => {

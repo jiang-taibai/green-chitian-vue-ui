@@ -64,17 +64,17 @@ const onLogin = () => {
 
 const onWechatLogin = () => {
   if (WxMiniProgramUtils.isWeChatEnv()) {
-    // WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
-    const redirectUri = resolveAbsoluteURL({name: 'Auth'})
-    getAuthorizeURL({
-      redirectUri,
-      scope: 'snsapi_userinfo',
-      state: 'wxlogin'
-    }).then(url => {
-      window.location.href = url;
-    }).catch(err => {
-      showFailToast(err.message);
-    });
+    WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
+    // const redirectUri = resolveAbsoluteURL({name: 'Auth'})
+    // getAuthorizeURL({
+    //   redirectUri,
+    //   scope: 'snsapi_userinfo',
+    //   state: 'wxlogin'
+    // }).then(url => {
+    //   window.location.href = url;
+    // }).catch(err => {
+    //   showFailToast(err.message);
+    // });
   } else {
     showFailToast('请在微信小程序中使用');
   }
