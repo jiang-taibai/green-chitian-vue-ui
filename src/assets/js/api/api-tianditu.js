@@ -4,7 +4,6 @@ import {TIAN_DI_TU_TOKEN} from "@/assets/js/secret/index.js";
 // 别骂了，官网 天地图 英文翻译就是 tianditu
 const apiTianditu = createAxiosInstance({
     baseURL: 'http://api.tianditu.gov.cn',
-    timeout: 20000,
     useToken: false,
 })
 

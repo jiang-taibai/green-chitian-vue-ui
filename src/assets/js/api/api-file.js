@@ -3,7 +3,6 @@ import {API_URL} from "@/assets/js/api/config.js";
 
 const api = createAxiosInstance({
     baseURL: API_URL,
-    timeout: 5000,
     useToken: true,
 });
 

@@ -12,7 +12,7 @@ import router from "@/assets/js/router/index.js";
 function createAxiosInstance(
     {
         baseURL,
-        timeout = 5000,
+        timeout = 20 * 1000,
         useToken = true,
     }) {
     const instance = axios.create({

@@ -4,7 +4,6 @@ import Joi from 'joi';
 
 const api = createAxiosInstance({
     baseURL: API_URL,
-    timeout: 5000,
     useToken: true,
 });
 

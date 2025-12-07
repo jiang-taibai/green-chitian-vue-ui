@@ -4,7 +4,6 @@ import Joi from 'joi';
 
 const api = createAxiosInstance({
     baseURL: 'https://open.weixin.qq.com',
-    timeout: 5000,
     useToken: false,
 });
 
