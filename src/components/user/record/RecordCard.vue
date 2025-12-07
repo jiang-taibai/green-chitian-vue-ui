@@ -22,17 +22,8 @@ const props = defineProps({
     type: String,
     default: "未知农田"
   },
-  agroChemicals: {
-    type: String,
-    default: "未知化肥/农药"
-  },
-  dosageNumber: {
-    type: Number,
-    default: 0.00
-  },
-  dosageUnit: {
-    type: String,
-    default: "g"
+  fertilizerCards: {
+    type: Array,
   },
   note: {
     type: String,
@@ -41,8 +32,12 @@ const props = defineProps({
 });
 
 const agroChemicalsDosage = computed(() => {
-  const agroChemicals = validator.isEmptyString(props.agroChemicals, true) ? "未知化肥/农药" : props.agroChemicals;
-  return `${agroChemicals} ${props.dosageNumber.toFixed(2)}(${props.dosageUnit})`;
+  const res = [];
+  props.fertilizerCards.forEach(item => {
+    const agroChemicals = validator.isEmptyString(item.fertilizerName, true) ? "未知化肥/农药" : item.fertilizerName;
+    res.push(`${agroChemicals} ${item.applicationUsed.toFixed(2)}(${item.unit})`);
+  })
+  return res.join("; ");
 });
 
 const openDetail = () => {

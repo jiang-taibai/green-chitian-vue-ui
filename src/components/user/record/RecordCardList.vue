@@ -23,7 +23,7 @@ const props = defineProps({
 
 /* ============== 数据 ============== */
 /**
- * @type {import('vue').Ref<UnwrapRef<FertilizationRecord[]>, UnwrapRef<FertilizationRecord[]> | FertilizationRecord[]>}
+ * @type {import('vue').Ref<UnwrapRef<FertilizationRecordDto[]>, UnwrapRef<FertilizationRecordDto[]> | FertilizationRecordDto[]>}
  */
 const records = ref([]);
 /**
@@ -33,7 +33,7 @@ const covers = ref({});
 const loading = ref(false);
 const pagination = ref({
   current: 0,
-  size: 10,
+  size: 5,
   pages: 100,
   total: 100,
 });
@@ -51,7 +51,7 @@ const queryRecords = () => {
     startDate: props.filterData.dateStart,
     endDate: props.filterData.dateEnd,
   })
-      .then(/** @param res {Result<Page<FertilizationRecord>>} */(res) => {
+      .then(/** @param res {Result<Page<FertilizationRecordDto>>} */(res) => {
         if (!isSuccessResponse(res)) {
           return;
         }
@@ -108,7 +108,7 @@ const onLoad = () => {
 const resetQueryFormAndData = () => {
   pagination.value = {
     current: 0,
-    size: 10,
+    size: 5,
     pages: 100,
     total: 100,
   };
@@ -133,9 +133,10 @@ const finished = computed(() => {
 <template>
   <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
     <record-card class="list-item" v-for="(item, idx) in records" :key="item.id"
-                 :id="item.id" :cover="covers[item.id]" :date="item.applicationDate" :farmland="item.feildName"
-                 :agroChemicals="item.fertilizerName" :dosageNumber="item.quantityUsed"
-                 :dosageUnit="item.unit" :note="item.notes"/>
+                 :id="item.id" :cover="covers[item.id]" :date="item.applicationDate"
+                 :farmland="item.committee + '-' + item.fieldClass + ' #' + item.fieldBlockId"
+                 :fertilizerCards="item.fertilizerCards"
+                 :note="item.notes"/>
   </van-list>
 </template>
 
