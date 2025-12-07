@@ -6,16 +6,21 @@ import './assets/css/style.css'
 import router from './assets/js/router'
 import TMap from '@map-component/vue-tmap';
 import {createPinia} from 'pinia'
+import { loadConfig } from '@/assets/js/public/config-center.js'
 
-const app = createApp(App)
+(async () => {
+  await loadConfig();
 
-// 引入路由
-app.use(router)
+  const app = createApp(App)
 
-// 引入地图组件
-app.use(TMap)
+  // 引入路由
+  app.use(router)
 
-// 引入 Pinia
-app.use(createPinia())
+  // 引入地图组件
+  app.use(TMap)
 
-app.mount('#app')
+  // 引入 Pinia
+  app.use(createPinia())
+
+  app.mount('#app')
+})();
