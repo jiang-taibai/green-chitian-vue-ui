@@ -1,0 +1,13 @@
+{
+  "apiBaseUrl": "http://111.230.80.160:18088/",
+  "tianditu": {
+    "key": "62f493357ff4a1d542d07733b7803fd7"
+  },
+  "tecentMap": {
+    "key": "KP6BZ-WOB3I-5K2GM-UPTW2-4MXIQ-B3BAN"
+  },
+  "weixin": {
+    "appId": "wx9a1c74e8fbc93fb8"
+  }
+}
+
