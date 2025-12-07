@@ -1,0 +1,13 @@
+{
+  "apiBaseUrl": "http://localhost:8080/",
+  "tianditu": {
+    "key": "xxx"
+  },
+  "tecentMap": {
+    "key": "xxx"
+  },
+  "weixin": {
+    "appId": "xxx"
+  }
+}
+
