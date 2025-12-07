@@ -101,6 +101,8 @@
  * @property {String} notes                 备注信息
  * @property {Array.<String>} imageIds      图片 ID 数组
  * @property {String} location              位置
+ * @property {String} fieldClass          田地类型
+ * @property {String} committee               所属村委会
  * @property {Array.<FertilizerCardDto>} fertilizerCards  施肥卡片
  * @property {String} createTime            记录创建时间
  * @property {String} updateTime            记录更新时间
