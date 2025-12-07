@@ -64,7 +64,9 @@ const onLogin = () => {
 
 const onWechatLogin = () => {
   if (WxMiniProgramUtils.isWeChatEnv()) {
-    WxMiniProgramUtils.reLaunch({url: '/pages/index/index'})
+    WxMiniProgramUtils.reLaunch({
+      url: '/pages/index/index?wxlogin=1',
+    })
     // const redirectUri = resolveAbsoluteURL({name: 'Auth'})
     // getAuthorizeURL({
     //   redirectUri,

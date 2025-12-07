@@ -8,6 +8,7 @@ import {useRouter} from 'vue-router';
 import {useUserStore} from "@/assets/js/store/user-info.js";
 import {wxLogin} from "@/assets/js/api/api-auth.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
+import {WxMiniProgramUtils} from "@/assets/js/plugins/weixing-js-sdk.js";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -46,7 +47,10 @@ const tryLoginIfByWechat = () => {
       userStore.setToken(res.data.jwt);
       userStore.setNeedBindPhone(res.data.needBind)
       showSuccessToast('登陆成功');
-      router.push({name: 'UserDashboard'});
+      // router.push({name: 'UserDashboard'});
+      WxMiniProgramUtils.reLaunch({
+        url: '/pages/index/index?auth=success',
+      })
     } else {
       showFailToast(res.message);
     }
