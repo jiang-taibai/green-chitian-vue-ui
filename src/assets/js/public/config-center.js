@@ -15,15 +15,15 @@
 
 /** @type {AppConfig} */
 const DEFAULT_CONFIG = Object.freeze({
-    apiBaseUrl: 'http://111.230.80.160:18088/',
+    apiBaseUrl: 'xxx',
     tianditu: {
-        key: '62f493357ff4a1d542d07733b7803fd7',
+        key: 'xxx',
     },
     tecentMap: {
-        key: "KP6BZ-WOB3I-5K2GM-UPTW2-4MXIQ-B3BAN",
+        key: "xxx",
     },
     weixin: {
-        appId: 'wx9a1c74e8fbc93fb8',
+        appId: 'xxx',
     },
 });
 
