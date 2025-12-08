@@ -64,7 +64,7 @@ function createAxiosInstance(
                         console.error('请求地址不存在');
                         break;
                     default:
-                        console.error(response.data.message || '请求失败');
+                        console.error(response.data?.message || '请求失败');
                 }
             } else {
                 console.error('网络错误或服务器未响应');
