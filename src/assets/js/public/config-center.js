@@ -1,6 +1,3 @@
-// A lightweight runtime config center that loads public/config.json once and caches it.
-// Provides JSDoc typedefs for IDE type hinting.
-
 /**
  * @typedef {Object} AppConfig
  * @property {string} apiBaseUrl - Base URL for backend API requests.
@@ -44,7 +41,7 @@ function deepFreeze(obj) {
 }
 
 /**
- * Perform a shallow merge of user config into defaults.
+ * 将用户配置浅层合并到默认值中。
  * @param {AppConfig} defaults
  * @param {Partial<AppConfig>} overrides
  * @returns {AppConfig}
@@ -64,11 +61,11 @@ function merge(defaults, overrides) {
 }
 
 /**
- * Load config.json from the public directory and cache it.
- * Safe to call multiple times; concurrent calls share the same promise.
+ * 从 public 目录加载 config.json 并缓存它。
+ * 多次通话安全；并发调用共享相同的承诺。
  *
- * @param {boolean} [forceReload=false] - Force re-fetch even if cached.
- * @returns {Promise<AppConfig>} The resolved application config.
+ * @param {boolean} [forceReload=false] - 即使已缓存，也强制重新获取。
+ * @returns {Promise<AppConfig>} 已解析的应用程序配置。
  */
 export function loadConfig(forceReload = false) {
     if (cachedConfig && !forceReload) return Promise.resolve(cachedConfig);
@@ -99,7 +96,8 @@ export function loadConfig(forceReload = false) {
 }
 
 /**
- * Get the last loaded config synchronously. You should call loadConfig() once during app bootstrap.
+ * 同步获取最后加载的配置。您应该在应用程序引导期间调用一次 loadConfig()。
+ * 最佳实践：使用函数式访问，例如 const value = () => getConfig().some.nested.value;
  * @returns {AppConfig}
  */
 export function getConfig() {
@@ -111,7 +109,7 @@ export function getConfig() {
 }
 
 /**
- * Get a nested value from config via a dot path, e.g. 'weixin.appId'.
+ * 通过点路径从配置中获取嵌套值，例如'weixin.appId'.
  * @template T
  * @param {string} path
  * @param {T} [fallback]
