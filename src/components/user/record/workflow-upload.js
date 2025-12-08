@@ -3,14 +3,19 @@ import {convertDateToYYYYMMDD, convertLocationToArray} from "@/assets/js/public/
 import {uploadImage} from "@/assets/js/api/api-file.js";
 import {isSuccessResponse} from "@/assets/js/api/response-utils.js";
 import {uploadFertilization} from "@/assets/js/api/api-record.js";
+import {showLoadingToast} from "vant";
 
 /**
  * 提交表单
  *
  */
 const onUploadRecord = async ({farmlandChooseForm, agroChemicalInfos, note, fileList, location}) => {
+    let loadingToast;
     try {
         await checkCommit(farmlandChooseForm, agroChemicalInfos);
+        loadingToast = showLoadingToast({
+            message: '上传中...', forbidClick: true, duration: 0,
+        });
         /**
          * 农药化肥记录的 DTO
          * @type {import('@/assets/js/public/types').FertilizationRecordDto}
@@ -27,6 +32,10 @@ const onUploadRecord = async ({farmlandChooseForm, agroChemicalInfos, note, file
         return uploadFertilization(fertilizationRecordDto)
     } catch (e) {
         return Promise.reject(e);
+    } finally {
+        if (loadingToast) {
+            loadingToast.close();
+        }
     }
 }
 
