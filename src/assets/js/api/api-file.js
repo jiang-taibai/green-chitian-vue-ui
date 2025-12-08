@@ -6,7 +6,7 @@ const api = createAxiosInstance({
     baseURL: API_URL, useToken: true,
 });
 
-let imageCache = null;
+const imageCache = createLRU('api.image', 100);
 
 /**
  * 根据照片Id获取照片
@@ -15,10 +15,6 @@ let imageCache = null;
  * @returns {Promise<string>}   解析后的照片 URL
  */
 export const getImage = async (id, isCompress = true) => {
-    if (!imageCache) {
-        imageCache = createLRU('api.image', 100);
-        await imageCache.init();
-    }
     // 先从缓存获取
     const key = `image_${id}${isCompress ? '_compress' : ''}`;
     const cached = imageCache.get(key);
@@ -29,9 +25,10 @@ export const getImage = async (id, isCompress = true) => {
         const res = await api.get(`/images/get/${id}`, {
             responseType: 'blob'
         })
+        const result = URL.createObjectURL(res);
         // 存入缓存
         imageCache.set(key, res);
-        return Promise.resolve(URL.createObjectURL(res));
+        return Promise.resolve(result);
     } catch (e) {
         return Promise.reject(e);
     }
