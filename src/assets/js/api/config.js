@@ -1,6 +1,6 @@
 import {getConfig} from "@/assets/js/public/config-center.js";
 
-const DEV_API_URL = 'http://111.230.80.160:18088/';
+const DEV_API_URL = 'http://121.4.117.66:8088';
 const PROD_API_URL = getConfig().apiBaseUrl;
 
 export const API_URL = import.meta.env.PROD ? PROD_API_URL : DEV_API_URL;
