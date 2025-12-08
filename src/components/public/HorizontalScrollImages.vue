@@ -87,7 +87,7 @@ function previewImage(index) {
 const initImages = async (imageIds) => {
   images.value = await Promise.all(imageIds.map(async id => {
     try {
-      return await getImage(id);
+      return await getImage(id, false);
     } catch (e) {
       console.error(e);
       return void 0;

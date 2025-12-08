@@ -11,15 +11,16 @@ let imageCache = null;
 /**
  * 根据照片Id获取照片
  * @param id    照片 Id
+ * @param isCompress {Boolean}  是否压缩
  * @returns {Promise<string>}   解析后的照片 URL
  */
-export const getImage = async (id) => {
+export const getImage = async (id, isCompress = true) => {
     if (!imageCache) {
         imageCache = createLRU('api.image', 100);
         await imageCache.init();
     }
     // 先从缓存获取
-    const key = `image_${id}`;
+    const key = `image_${id}${isCompress ? '_compress' : ''}`;
     const cached = imageCache.get(key);
     if (cached) {
         return Promise.resolve(URL.createObjectURL(cached));

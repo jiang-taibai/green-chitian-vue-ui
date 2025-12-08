@@ -72,7 +72,7 @@ const queryRecords = () => {
             continue;
           }
           const imageId = record.imageIds[0]
-          getImage(imageId).then((url) => {
+          getImage(imageId, true).then((url) => {
             covers.value[record.id] = url;
           }).catch((error) => {
             console.error("获取封面图片失败：", error);
