@@ -1,10 +1,14 @@
 import {createAxiosInstance} from "@/assets/js/api/axios-wrapper.js";
 import {API_URL} from "@/assets/js/api/config.js";
+import {createLRU} from "@/assets/js/cache/lru.js";
 
 const api = createAxiosInstance({
     baseURL: API_URL,
     useToken: true,
 });
+
+const imageCache = createLRU('api.image', 100);
+await imageCache.init();
 
 /**
  * 根据照片Id获取照片
@@ -12,10 +16,18 @@ const api = createAxiosInstance({
  * @returns {Promise<string>}   解析后的照片 URL
  */
 export const getImage = async (id) => {
+    // 先从缓存获取
+    const key = `image_${id}`;
+    const cached = imageCache.get(key);
+    if (cached) {
+        return Promise.resolve(URL.createObjectURL(cached));
+    }
     try {
         const res = await api.get(`/images/get/${id}`, {
             responseType: 'blob'
         })
+        // 存入缓存
+        imageCache.set(key, res);
         return Promise.resolve(URL.createObjectURL(res));
     } catch (e) {
         return Promise.reject(e);
