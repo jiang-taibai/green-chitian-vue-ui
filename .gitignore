@@ -27,3 +27,4 @@ dist-ssr
 .vscode
 debug
 secret
+/public/config.json
