@@ -111,14 +111,6 @@ export function getConfig() {
 }
 
 /**
- * Convenience helper to retrieve apiBaseUrl.
- * @returns {string}
- */
-export function getApiBaseUrl() {
-    return getConfig().apiBaseUrl || DEFAULT_CONFIG.apiBaseUrl;
-}
-
-/**
  * Get a nested value from config via a dot path, e.g. 'weixin.appId'.
  * @template T
  * @param {string} path
