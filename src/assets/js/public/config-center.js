@@ -1,27 +1,12 @@
 /**
  * @typedef {Object} AppConfig
  * @property {string} apiBaseUrl - Base URL for backend API requests.
- * @property {Object} tianditu - Tianditu map service config.
- * @property {string} tianditu.key - Tianditu API key.
- * @property {Object} tecentMap - Tencent Map service config.
- * @property {string} tecentMap.key - Tencent Map API key.
- * @property {Object} weixin - Weixin (WeChat) config.
- * @property {string} weixin.appId - Weixin application ID.
  */
 
 
 /** @type {AppConfig} */
 const DEFAULT_CONFIG = Object.freeze({
     apiBaseUrl: 'xxx',
-    tianditu: {
-        key: 'xxx',
-    },
-    tecentMap: {
-        key: "xxx",
-    },
-    weixin: {
-        appId: 'xxx',
-    },
 });
 
 /** @type {AppConfig | null} */
